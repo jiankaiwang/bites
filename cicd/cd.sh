@@ -24,19 +24,20 @@ fi
 
 cicdPath=$cdPath/cicd
 cdlog=$cdPath/cdlog.txt
-ciCheck=$(python ci.py -u $userName -n $repoName -t $ciKey -p $cdPath)
-echo $ciCheck
+python ci.py -u $userName -n $repoName -t $ciKey -p $cdPath
 
-if [ "$ciCheck" = "1" ]; then
+if [ $? = 1 ]; then
     echo "No CD."
 fi
-if [ "$ciCheck" = "0" ]; then
+if [ $? = 0 ]; then
+    echo "Start CD."
     cd $cdPath
     originVer=$(git rev-parse HEAD)
     git checkout master
     git pull --rebase
     lastVer=$(git rev-parse HEAD)
     echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
+    echo "Complete CD."
 fi
 
 exit 0
