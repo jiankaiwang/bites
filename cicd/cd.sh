@@ -23,7 +23,7 @@ else
 fi
 
 cicdPath=$cdPath/cicd
-cdlog=$cdPath/log.txt
+cdlog=$cdPath/cdlog.txt
 ciCheck=$(python ci.py -u $userName -n $repoName -t $ciKey -p $cdPath)
 echo $ciCheck
 
@@ -31,7 +31,12 @@ if [ "$ciCheck" = "1" ]; then
     echo "No CD."
 fi
 if [ "$ciCheck" = "0" ]; then
-    echo "$(date), Activate CD." >> $cdlog
+    cd $cdPath
+    originVer=$(git rev-parse HEAD)
+    git checkout master
+    git pull --rebase
+    lastVer=$(git rev-parse HEAD)
+    echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
 fi
 
 exit 0
