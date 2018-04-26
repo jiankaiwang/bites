@@ -164,6 +164,3 @@ venv.bak/
 
 # ide configuration
 *.code-workspace
-
-# ignore sysconfig.js
-sysconfig.js
