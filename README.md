@@ -44,7 +44,7 @@ var sysconf = {
     "umap_version" : "0.0.1"
     , "availableLang" : "en zh_TW"
     , "defaultLang" : "zh_TW"
-    , "site_description" : "Umap is the general GIS purpose framework based on nodejs."
+    , "site_description" : "Bites project is the open source for GIS with AI image recognition for providing residents with information of snake and rabies-infected animals."
     , "error_emails_to" : "null"
     , "api_allow_host" : "localhost 127.0.0.1"
     , "use-redis": false
