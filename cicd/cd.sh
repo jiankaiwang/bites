@@ -25,11 +25,11 @@ fi
 cicdPath=$cdPath/cicd
 cdlog=$cdPath/cdlog.txt
 python ci.py -u $userName -n $repoName -t $ciKey -p $cdPath
+execRes=$?
 
-if [ $? = 1 ]; then
+if [ $execRes = 1 ]; then
     echo "No CD."
-fi
-if [ $? = 0 ]; then
+elif [ $execRes = 0 ]; then
     echo "Start CD."
     cd $cdPath
     originVer=$(git rev-parse HEAD)
