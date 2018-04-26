@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="jiankai wang, https://jiankaiwang.no-ip.biz/" />
+
+    <!-- css -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/node_modules/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <link href="/node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.css" rel="stylesheet" />   
+    <link href="/node_modules/bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet" />
+    <link href="/node_modules/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet" />
+    <link href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href='/src/style.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div id="mapid"></div>
+
+    <!-- menu -->
+    <div class="menu">
+      <div class="menu-ctd">
+        <div class="row">
+          <a href="#" onclick="showNavInfo();" class="show-curosr">
+          <div class="col-xs-1 col-md-1 menu-btn">
+              <i class="fa fa-bars fa-half1p8x" aria-hidden="true"></i>
+          </div>
+          </a>
+          <div class="col-xs-1 col-md-1">
+            <div class="menu-div"></div>
+          </div>
+          <div class="col-xs-8 col-md-8">
+            <input type="text" id="searchingtext" class="form-control input-no-border input-more-width" placeholder="<%= searchingtext %>">
+          </div>
+          <div class="col-xs-1 col-md-1 show-curosr">
+            <a href="#" class="show-detail" onclick="showDetailList();">
+              <i class="fa fa-search menu-btn fa-half1p8x margin-left--16px light-gray" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="detail display-none">
+      <div class="container-fluid">
+        <div class="row">
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= asksnakebite%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= asksnake%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= askrabies%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= askrabiesbite%></div>
+        </div>
+        <hr class="hr-menu" />
+        <div class="row">
+
+        </div>
+      </div>
+    </div>
+
+    <!-- user -->
+    <div class="user-notify"></div>
+
+    <div class="user show-curosr h-center" onclick="javascript: switchUser();">
+      <a href="#" title="<%= login %>">
+        <i class="fa fa-user-circle fa-2x v-middle" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="report show-curosr h-center leaflet-control-zoom leaflet-bar leaflet-control">
+      <a href="#" id="reportBtn" title="<%= report %>" data-toggle="modal" data-target="#reportsection">
+        <i class="fa fa-info-circle ubtn keep-center" aria-hidden="true"></i>
+      </a>
+    </div>    
+
+    <!-- logo -->
+    <div class="mark"><img class="logo" src='img/bites_logo_min.png'/></div>
+
+    <!-- nav -->
+    <div id="nav">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-10 col-md-10">
+            <h3><div class="meau-mark"><img class="logo" src='img/bites_logo_min.png'/></div></h3>
+          </div>
+          <a href="#">
+            <div class="col-xs-2 col-md-2 show-curosr" onclick="showNavInfo();">
+              <h3><i class="fa fa-times" aria-hidden="true"></i></h3>
+            </div>
+          </a>
+        </div>
+        <hr class="hr-menu" />
+        <!-- main service -->
+        <div class="enlarge-row">
+            <div class="row">
+              <a data-toggle="collapse" data-parent="#accordion" href="#positioning">
+              <div class="col-xs-2 col-md-2">
+                <h4><i class="fa fa-map-marker v-middle" aria-hidden="true"></i></h4>
+              </div>
+              <div class="col-xs-10 col-md-10">
+                <h4><%= positioning %></h4>
+              </div>
+              </a>
+            </div>  
+            <div id="positioning" class="panel-collapse collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                <div class="input-slider-ctd">
+                <label class="checkbox-inline padding-left-4px">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="small"> <%= enablePositioning %>
+                </label>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        <div class="enlarge-row">
+          <div class="row">
+              <a data-toggle="collapse" data-parent="#accordion" href="#searchrange">
+                <div class="col-xs-2 col-md-2">
+                  <h4><i class="fa fa-map-signs v-middle" aria-hidden="true"></i></h4>
+                </div>
+                <div class="col-xs-10 col-md-10">
+                  <h4><%= searchrange %></h4>
+                </div>
+              </a>
+          </div>
+          <div id="searchrange" class="panel-collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                  <div class="input-slider-ctd">
+                    <input id="ex21" type="text"
+                      data-provide="slider"
+                      data-slider-ticks="[1, 2, 3]"
+                      data-slider-ticks-labels='["<%= r0 %>", "<%= r500 %>", "<%= r1000 %>"]'
+                      data-slider-min="1"
+                      data-slider-max="3"
+                      data-slider-step="1"
+                      data-slider-value="2"
+                      data-slider-tooltip="hide" />
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="enlarge-row">
+          <div class="row">
+            <a data-toggle="collapse" data-parent="#accordion" href="#basemapstyle">
+              <div class="col-xs-2 col-md-2">
+                <h4><i class="fa fa-pencil-square-o v-middle" aria-hidden="true"></i></h4>
+              </div>
+              <div class="col-xs-10 col-md-10">
+                <h4><%= basemapstyle %></h4>
+              </div>
+            </a>
+          </div>  
+          <div id="basemapstyle" class="panel-collapse collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                <div class="col-xs-6 col-md-6 no-padding-right">
+                  <button type="button" class="btn btn-primary btn-sm full-btn" onclick="javascript: changeOuterLayer();"><%= outdoorlayer%></button>
+                </div>
+                <div class="col-xs-6 col-md-6 no-padding-left">
+                  <button type="button" class="btn btn-secondary btn-sm full-btn" onclick="javascript: changeGrayLayer();"><%= graylayer%></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="enlarge-row">
+          <div class="row">
+            <a data-toggle="collapse" data-parent="#accordion" href="#messaging">
+              <div class="col-xs-2 col-md-2">
+                <h4><i class="fa fa-bell-o v-middle" aria-hidden="true"></i></h4>
+              </div>
+              <div class="col-xs-10 col-md-10">
+                <h4><%= messaging %></h4>
+              </div>
+            </a>
+          </div>  
+          <div id="messaging" class="panel-collapse collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                <div class="input-slider-ctd">
+                <label class="checkbox-inline padding-left-4px">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="small"> <%= enableMessaging %>
+                </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="enlarge-row">
+          <div class="row">
+            <a data-toggle="collapse" data-parent="#accordion" href="#enableLegend">
+              <div class="col-xs-2 col-md-2">
+                <h4><i class="fa fa-list-ul v-middle" aria-hidden="true"></i></h4>
+              </div>
+              <div class="col-xs-10 col-md-10">
+                <h4><%= enableLegend %></h4>
+              </div>
+            </a>
+          </div>  
+          <div id="enableLegend" class="panel-collapse collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                <div class="input-slider-ctd">
+                <label class="checkbox-inline padding-left-4px">
+                  <input type="checkbox" checked data-toggle="toggle" data-size="small"> <%= hideLegend %>
+                </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="hr-menu" />
+        <div class="enlarge-row">
+          <div class="row">
+            <a data-toggle="collapse" data-parent="#accordion" href="#rabiesnotify">
+              <div class="col-xs-2 col-md-2">
+                <h4><i class="fa fa-calendar v-middle" aria-hidden="true"></i></h4>
+              </div>
+              <div class="col-xs-10 col-md-10">
+                <h4><%= rabiesnotify %></h4>
+              </div>
+            </a>
+          </div>  
+          <div id="rabiesnotify" class="panel-collapse collapse">
+            <div class="enlarge-row">
+              <div class="row">
+                <div class='col-sm-12'>
+                    <div class="form-group">
+                        <div class='input-group date' id='vaccdate'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class='col-sm-12'>
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <%= vacnotify %>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li onclick="javascript: calAndShowVaccPeroid(1);" data-toggle="modal" data-target="#vaccineNotify"><a href="#"><%= vac1 %></a></li>
+                        <li onclick="javascript: calAndShowVaccPeroid(2);" data-toggle="modal" data-target="#vaccineNotify"><a href="#"><%= vac2 %></a></li>
+                        <li onclick="javascript: calAndShowVaccPeroid(3);" data-toggle="modal" data-target="#vaccineNotify"><a href="#"><%= vac3 %></a></li>
+                        <li onclick="javascript: calAndShowVaccPeroid(4);" data-toggle="modal" data-target="#vaccineNotify"><a href="#"><%= vac4 %></a></li>
+                        <li onclick="javascript: calAndShowVaccPeroid(5);" data-toggle="modal" data-target="#vaccineNotify"><a href="#"><%= vac5 %></a></li>
+                      </ul>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="hr-menu" />
+        <!-- additional information -->
+        <div class="row">
+          <a href="<%= changelangurl %>">
+            <div class="col-xs-2 col-md-2">
+              <h4><i class="fa fa-language v-middle" aria-hidden="true"></i></h4>
+            </div>
+            <div class="col-xs-10 col-md-10">
+              <h4><%= changelang %></h4>
+            </div>
+          </a>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-12">
+            <a href="https://github.com/jiankaiwang/bites" target=_blank><h5><%= sourcecode %></h5></a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-12">
+            <a href="mailto:gljankai@gmail.com" target=_blank><h5><%= opinion %></h5></a>
+          </div>
+        </div>
+      </div>	
+    </div>
+
+    <!-- icon tip -->
+    <div class="legend">
+      <div class="container-fluid legendBody">
+      </div>
+    </div>
+      
+    <!-- Modal for reporting -->
+    <div class="modal fade" id="reportsection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><%= reportSystem %></h4>
+            </div>
+            <div class="modal-body">  
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= reportDate %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='reportDate'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-map-marker"></i> <%= reportLocation %></div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control input-sm" id="icpdataaddress" placeholder="<%= reportLocationDesc %>"/>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-compass"></i> <%= reportArea %></div>
+                        <div class="col-md-6">
+                        <select class="form-control input-sm" id="area">
+                            <option><%= reportArea1 %></option>
+                            <option><%= reportArea2 %></option>
+                            <option><%= reportArea3 %></option>
+                            <option><%= reportArea4 %></option>
+                            <option><%= reportArea5 %></option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-user"></i> <%= reportman_email %></div>
+                        <div class="col-md-6">
+                          <input type="email" class="form-control" id="reportman_email" placeholder="email@example.com">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row"><hr /></div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-12 text-center"><%= uploadimg %></div>
+                        <div class="col-md-12 text-center">
+                          <input name="uploadImg" type="file" accept="image/gif, image/jpeg, image/png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                      <div class="g-recaptcha" data-sitekey="6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary uploadicp"><%= reportsend %></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><%= reportclose %></button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Modal for vaccine -->
+    <div class="modal fade" id="vaccineNotify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><%= vaccineTitle %></h4>
+            </div>
+            <div class="modal-body">  
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= firstVaccine %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='vaccine-1'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= secondVaccine %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='vaccine-2'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= thirdVaccine %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='vaccine-3'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= fourthVaccine %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='vaccine-4'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-6"><i class="fa fa-calendar"></i> <%= fifthVaccine %></div>
+                        <div class="col-md-6">
+                          <div class='input-group date' id='vaccine-5'>
+                              <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                      <div class="col-md-6 text-left">
+                        <i class="fa fa-user"></i> <%= vaccnotify_email %>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="email" class="form-control" id="vaccnotify_email" placeholder="email@example.com">
+                      </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                      <div class="g-recaptcha" data-sitekey="<%= recaptchaSiteKey %>"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-warning uploadicp"><%= vaccnotifysend %></button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><%= vaccnotifyclose %></button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- detail -->
+    <div id="detail"></div>
+
+    <!-- chatbot -->
+    <div id="chatbot"></div>
+
+    <!-- javascript -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>	
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>	
+    <script src="/node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="/node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>  
+    <script src="/node_modules/bootstrap-slider/dist/bootstrap-slider.min.js"></script> 
+    <script src="/node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>  
+    <script src="/node_modules/moment/min/moment.min.js"></script>  
+    <script src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>  
+    <script src="/async/async.min.js"></script>
+    <script src="/seed/Common.js"></script>
+    <script src="/seed/TimeCounter.js"></script>
+    <script src="/src/config.js"></script>  
+    <script src="/src/currentPosition.js"></script>  
+    <script src="/src/warnandcamera.js"></script>
+    <script src="/src/addMenu.js"></script>
+    <script src="/src/general.js"></script>  
+  </body>
+</html>

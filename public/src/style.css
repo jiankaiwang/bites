@@ -1,0 +1,417 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: monospace, Microsoft JhengHei, sans-serif; 
+}
+
+#mapid { 
+    height: 100%; 
+    width: 100%;
+    min-height: 100%;
+}
+
+.show-curosr {
+	cursor: pointer;
+}
+
+A:link {
+	color: black; 
+	text-decoration: none; 
+	font-family: monospace, Microsoft JhengHei, sans-serif; 
+}
+A:visited {
+	text-decoration: none; 
+	color: black;
+}
+A:active {
+	text-decoration: none;
+}
+A:hover {
+	color: rgba(0,162,232,1);
+}
+
+.marker-add {
+	color: rgba(200,200,200,0.4);
+}
+
+.map-on {
+	color: rgba(34,177,76,1);
+}
+
+A.tmpRemove {
+	color: rgba(200,200,200,1);
+}
+
+.keep-center {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.hr-menu {
+	margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.v-middle {
+	vertical-align: middle;
+}
+
+.h-center {
+	text-align: center;
+}
+
+/* menu */
+.menu {
+	z-index: 900;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+	background-color: rgba(255,255,255,1);
+	border: 2px solid rgba(200,200,200,1);
+	width: 300px;
+}
+
+.menu-ctd {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+	padding-bottom: 4px;
+	height: 42px;
+}
+
+.detail {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	z-index: 900;
+    position: absolute;
+    top: 54px;
+	left: 10px;
+	width: 300px;
+	border: 1px solid rgba(200,200,200,1);
+	background-color: rgba(255,255,255,1);
+}
+
+.menu-btn {
+	height: 100%;
+	margin-top: 6px;
+	margin-left: 6px;
+}
+
+.display-none {
+	display: none;
+}
+
+.margin-left--7px {
+	margin-left: -7px;
+}
+
+.margin-left--16px {
+	margin-left: -16px;
+}
+
+.fa-half1p8x {
+	padding-top: 3px;
+	font-size: 1.8rem;
+}
+
+.fa-half2x {
+	padding-top: 6px;
+	font-size: 2.0rem;
+}
+
+.input-more-width {
+	width: 120%;
+	margin-left: -25px;
+}
+
+.input-no-border {
+	border: 0px;
+	box-shadow: none;
+}
+
+input[type="text"]:focus {
+	border-color: rgba(255, 255, 255, 0);
+	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.075) inset, 0 0 0px rgba(255, 255, 255, 0);
+	outline: 0 none;	
+}
+
+.menu-div {
+	width: 2px;
+    height: 30px;
+    margin-top: 2px;
+	background-color: rgba(200,200,200,1);
+}
+
+.light-gray {
+	color: rgba(200,200,200,0.8);
+}
+
+.enlarge-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.no-padding-left {
+	padding-left: 0px;
+}
+
+.no-padding-right {
+	padding-right: 0px
+}
+
+.padding-left-4px {
+	padding-left: 4px;
+}
+
+.margin-top-3px {
+	margin-top: 3px;
+}
+
+.margin-5px {
+	margin: 5px;
+}
+
+.ask-btn-bg {
+	background-color: rgba(63,122,183,0.2);
+}
+
+/* user */
+.user-notify {
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0);
+	border: 4px solid rgba(34, 177, 76, 0.4);
+	position: absolute;
+	z-index: 900;
+	display: none;
+}
+
+.user {
+	width: 30px;
+    z-index: 900;
+    position: absolute;
+    top: 10px;
+    right: 12px;
+	background-color: rgba(255,255,255,0);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+/* report */
+.report {
+    z-index: 900;
+    position: absolute;
+    top: 50px;
+	right: 10px;
+	border: 2px solid rgba(0,0,0,0.2);
+	background-color: rgba(255,255,255,1);
+}
+
+.leaflet-style-btn {
+	width: 30px;
+    height: 30px;
+}
+
+#reportBtn {
+	width: 30px;
+    height: 30px;
+}
+
+.section-row {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* legend */
+.legend {
+	z-index: 900;
+	position: absolute;
+	bottom: 28px;
+	left: 10px;
+	background-color: rgba(255,255,255,1);
+	border: 2px solid rgba(200,200,200,1);
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 5px;
+	width: 170px;
+}
+
+.legend-row {
+	height: 20px;
+}
+
+.circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    color: #fff;
+    line-height: 15px;
+	font-size: 15px;
+	margin-top: 4px;
+}
+
+.circle-blue {
+	background: rgba(0,0,255,0.8);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-red {
+	background: rgba(255,0,0,0.8);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-light-red {
+	background: rgba(255,0,0,0.2);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-orange {
+	background: rgba(255,127,39,0.8);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-light-orange {
+	background: rgba(255,127,39,0.2);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-float {
+	float: left;
+}
+
+/* logo */
+.mark {
+	width: 60px;
+    z-index: 900;
+    position: absolute;
+    bottom: 28px;
+    right: 48%;
+    background-color: rgba(255,255,255,0);
+}
+
+.meau-mark {
+	width: 60px;
+    background-color: rgba(255,255,255,0);
+}
+
+.logo {
+	width: 100%;
+}
+
+/* map controller */
+/* position : bottom-left corner of the map */
+.searchInput,
+{
+    max-width: 360px;
+    overflow: hidden;
+    overflow-x: auto;
+}
+.send-hover:hover {
+    background-color: rgba(255,127,39,1);
+    color: rgba(255,255,255,1);
+    cursor: pointer;
+}
+
+/* map style */
+.grayscale .leaflet-tile-pane {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+/* nav style */
+#nav {
+	width: 0%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1000;
+	background-color: rgba(255,255,255,1);
+	overflow: hidden;
+    overflow-y: auto;
+}
+#nav::-webkit-scrollbar,
+#detail::-webkit-scrollbar {
+	width: 5px;
+	height: 1px;
+	background-color: rgba(200,200,200,0.5);
+}
+
+#nav::-webkit-scrollbar-track,
+#detail::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.3);
+	background-color: rgba(200,200,200,0.2);
+}
+
+#nav::-webkit-scrollbar-thumb,
+#detail::-webkit-scrollbar-thumb {
+	background-color: #000000;
+}
+
+/* umap button */
+.small-ubtn {
+	font-size: 18px;
+}
+
+.ubtn {
+	font-size: 20px;
+	text-align: center;
+}
+
+.ubtn-sm {
+	font-size: 16px;
+	text-align: center;
+}
+
+.ubtn-2x {
+	font-size: 24px;
+	text-align: center;
+}
+
+/* simple color */
+.bg-blue {
+	background: rgba(0,0,255,1);
+}
+
+/* map style */
+.grayscale .leaflet-tile-pane {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+/* slider container */
+.input-slider-ctd {
+	margin-right: 30px;
+	margin-left: 30px;
+}
+
+/* btn in menu */
+.full-btn {
+	width: 100%;
+}
+
+/*
+ * mobile or tablet
+ */
+@media only screen and (max-width: 500px) {
+    .searchInput
+    {
+        width: 260px;
+        overflow: hidden;
+        overflow-x: auto;
+	}
+	
+	/* logo */
+	.mark {
+		right: 40%;
+	}
+}

@@ -1,0 +1,10 @@
+sudo:          true
+language:      node_js
+node_js:
+  - "node"
+install:       npm install
+script:
+  - npm run ci
+cache:
+  directories:
+    - node_modules

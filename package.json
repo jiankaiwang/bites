@@ -1,0 +1,48 @@
+{
+  "name": "bites",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "start-server": "npm start",
+    "test": "mocha test/browsers.js",
+    "ci": "start-server-and-test start-server http://localhost:8081 test"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "bootstrap": "^3.3.7",
+    "bootstrap-slider": "^10.0.0",
+    "bootstrap-toggle": "^2.2.2",
+    "connect-redis": "^3.3.3",
+    "crypto": "^1.0.1",
+    "ejs": "^2.5.9",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "express": "3.2.6",
+    "express-session": "^1.15.6",
+    "font-awesome": "^4.7.0",
+    "https": "^1.0.0",
+    "jquery": "^3.3.1",
+    "leaflet": "^1.3.1",
+    "leaflet.awesome-markers": "^2.0.4",
+    "mocha": "^5.1.1",
+    "moment": "^2.22.1",
+    "popper.js": "^1.14.3",
+    "qs": "^1.2.2",
+    "querystring": "^0.2.0",
+    "redis": "^2.8.0",
+    "send": "^0.11.1",
+    "should": "^13.2.1",
+    "start-server-and-test": "^1.4.1",
+    "url": "^0.11.0"
+  },
+  "description": "Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)\r  ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))",
+  "main": "app.js",
+  "devDependencies": {},
+  "keywords": [
+    "umap",
+    "gis",
+    "ai"
+  ],
+  "author": "JianKai Wang",
+  "license": "MIT"
+}
