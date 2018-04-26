@@ -31,6 +31,8 @@ if [ $execRes = 1 ]; then
     echo "No CD."
 elif [ $execRes = 0 ]; then
     echo "Start CD."
+    sudo systemctl stop bites.service
+    systemctl status bites.service
     cd $cdPath
     originVer=$(git rev-parse HEAD)
     git checkout master
@@ -38,6 +40,8 @@ elif [ $execRes = 0 ]; then
     lastVer=$(git rev-parse HEAD)
     echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
     echo "Complete CD."
+    sudo systemctl start bites.service
+    systemctl status bites.service
 fi
 
 exit 0

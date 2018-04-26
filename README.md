@@ -76,3 +76,45 @@ npm install --save
 sudo npm start
 ```
 
+### Service
+
+* Establish the service by adding the script to `/etc/systemd/system/bites.service`
+
+```shell
+[Unit]
+Description=bites project
+After=network.target
+
+[Service]
+User=jenkins
+Group=jenkins
+ExecStart=/usr/bin/node /home/cdc/bites/app.js
+Restart=always
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/cdc/bites
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Check service status: `sudo systemctl status bites.service`, automatically start the service after rebooting `sudo systemctl enable bites.service` and start/stop the service `sudo systemctl start|stop bites.service`.
+
+* Allow nopasswd commands running the service to build in CI/CD tools (using `Jenkins` as ci/cd tool). Edit the file ` /etc/sudoers.d/90-cloud-init-users`.
+
+```ini
+# jenkins example
+Cmnd_Alias MYAPP_CMNDS = /bin/systemctl start bites.service, /bin/systemctl stop bites.service, /bin/systemctl restart bites.service, /usr/bin/node /home/cdc/bites/app.js
+jenkins ALL=(ALL) NOPASSWD:MYAPP_CMNDS
+```
+
+* shell script example to activate ci/cd
+
+```shell
+#!/bin/bash
+
+# start the CD
+cd /home/cdc/bites/cicd/
+/bin/bash cd.sh jiankaiwang bites "travis-token" /home/cdc/bites
+```
+
