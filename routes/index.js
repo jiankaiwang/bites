@@ -80,6 +80,7 @@ exports.index = function(req, res){
     changelang: translater(lang, {'en':'中文', "zh_TW":'English'}),
     changelangurl: translater(lang, {'en':'/zh_TW', "zh_TW":'/en'}),
     opinion: translater(lang, {'en':'Opinion', "zh_TW":'提供意見'}),
+    legendTip: translater(lang, {'en':'Legend', "zh_TW":'圖例'}),
     loginTitle: translater(lang, {'en':'Select a service to login.', "zh_TW":'選擇一個服務登入'}),
     closeLogin: translater(lang, {'en':'Close', "zh_TW":'關閉'}),
     recaptchaSiteKey: "6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"

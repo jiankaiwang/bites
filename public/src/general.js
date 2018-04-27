@@ -3,6 +3,27 @@
  * |- mymap : base map object
  */
 var mymap;
+var allParams = {
+	selfLoc: []
+	, selfMode: ""
+	, settings: {
+		positioning: ""
+		, range: 1
+		, message: true
+		, legend: true
+	}
+	, vaccine: {
+		date: "04/27/2018"
+		, dosetype: "first"
+		, notifyemail: ""
+	}
+	, report: {
+		date: "04/27/2018"
+		, location: ""
+		, areatype: "mountain"
+		, reportemail: ""
+	}
+};
 
 /*
  * desc : api checker
@@ -182,9 +203,38 @@ function addBtnListener() {
 	});
 }
 
+function legendScaled() {
+	if(! $(".legend").hasClass('legend-none')) {
+		if($(".legend").hasClass('legend-small')) {
+			// to the origin scale
+			$(".legendTip").addClass('display-none');			
+			$(".legend").animate({
+				width: '170px',
+				height: '154px'
+			},'slow');
+			$(".legend").removeClass('legend-small');
+			$(".legend").addClass('legend-origin');
+			$(".legendBody").removeClass('display-none');
+		} else {
+			// to the small scale			
+			$(".legend").animate({
+				width: '50px',
+				height: '50px'
+			},'slow');
+			$(".legend").removeClass('legend-origin');
+			$(".legend").addClass('legend-small');
+			$(".legendBody").addClass('display-none');
+			$(".legendTip").removeClass('display-none');
+		}
+	}
+}
+
 /**
  * desc: prepare the environment parameters
  */
+function getAllParams() {
+
+}
 
 
 /* 

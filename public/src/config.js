@@ -77,6 +77,7 @@ var front_translation = {
 	, "selfPos": { "en": "Current Position", "zh_TW": "現在位置" }
 	, "warningBtn": { "en": "Warning Messages", "zh_TW": "警示訊息" }
 	, "imageBtn": { "en": "Image Recognition", "zh_TW": "影像辨識" }
+	, "hospBtn": { "en": "Nearest Hospital", "zh_TW": "最近就醫地點" }
 	, "snakeInYear": { "en": "Snake (< 1yr)", "zh_TW": "1年內毒蛇出沒" }
 	, "snakeMoreYear": { "en": "Snake (> 1yr)", "zh_TW": "歷史毒蛇出沒" }
 	, "rabiesInYear": { "en": "Radies Animal (< 1yr)", "zh_TW": "1年內狂犬病動物出沒" }

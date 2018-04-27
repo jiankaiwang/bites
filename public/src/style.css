@@ -243,10 +243,17 @@ input[type="text"]:focus {
 	-webkit-border-radius: 5px;
 	padding: 5px;
 	width: 170px;
+	
 }
 
 .legend-row {
 	height: 20px;
+}
+
+.legendTip {
+	text-align: center;
+	margin-top: 10px;
+	font-weight: bold;
 }
 
 .circle {
@@ -412,6 +419,6 @@ input[type="text"]:focus {
 	
 	/* logo */
 	.mark {
-		right: 40%;
+		right: 45%;
 	}
 }

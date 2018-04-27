@@ -86,8 +86,8 @@ Description=bites project
 After=network.target
 
 [Service]
-User=jenkins
-Group=jenkins
+User=root
+Group=root
 ExecStart=/usr/bin/node /home/cdc/bites/app.js
 Restart=always
 Environment=PATH=/usr/bin:/usr/local/bin

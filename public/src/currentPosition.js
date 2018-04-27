@@ -69,7 +69,7 @@ function addSelfLocBtnToMap(previous,callback) {
             div.style.backgroundColor = 'white';
             var control_htm = '<a class="leaflet-control-zoom-in" href="#map" title="'
 				+ frontTranslation("selfLocBtn",defaultLang)
-                + '" role="button" onclick="__showCurrentLocation();"><i class="fa fa-location-arrow main-btn" aria-hidden="true"></i></a>';
+                + '" role="button" onclick="__showCurrentLocation();"><i class="fa fa-map-marker main-btn" aria-hidden="true"></i></a>';
             div.innerHTML = control_htm;
             div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
             L.DomEvent.disableClickPropagation(div);
