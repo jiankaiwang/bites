@@ -38,10 +38,11 @@ elif [ $execRes = 0 ]; then
     git checkout master
     git pull --rebase
     lastVer=$(git rev-parse HEAD)
-    echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
-    echo "Complete CD."
+    npm install
     sudo systemctl start bites.service
     systemctl status bites.service
+    echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
+    echo "Complete CD."
 fi
 
 exit 0
