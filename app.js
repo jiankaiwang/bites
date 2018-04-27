@@ -16,7 +16,8 @@ var sc = require('./configure/sysconfig')
   , session = require('express-session')
   , path = require('path')
   , bodyParser = require('body-parser')
-  , app = express();
+  , app = express()
+  , directoryExists = require('directory-exists');
 
 var api = require('./routes/api')
   , api_service = require('./routes/api_service');
@@ -91,7 +92,7 @@ app.all('/api/service', api_service.portal);
  * https server use let's encrypt as the example
  */
 var port = { "http" : 8081, "https" : 4435 }
-  , allowService = { "http" : true, "https" : false };
+  , allowService = { "http" : true, "https" : true };
 
 if (allowService["http"]) {
   http.createServer(app).listen(port["http"], function(){
@@ -100,12 +101,18 @@ if (allowService["http"]) {
 }
 
 if (allowService["https"]) {
-  var options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/cert.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/(domain.name)/chain.pem')
-  };
-  https.createServer(options, app).listen(port["https"], function(){
-    console.log('bites listening on port ' + port["https"]);
+  directoryExists('/etc/letsencrypt/live/bites.cdc.gov.tw/', (error, result) => {
+    if(result) {
+      var options = {
+        key: fs.readFileSync('/etc/letsencrypt/live/bites.cdc.gov.tw/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/bites.cdc.gov.tw/cert.pem'),
+        ca: fs.readFileSync('/etc/letsencrypt/live/bites.cdc.gov.tw/chain.pem')
+      };
+      https.createServer(options, app).listen(port["https"], function(){
+        console.log('bites listening on port ' + port["https"]);
+      });
+    } else {
+      console.log("Let's encrypt directory is not found so https service is not established.");
+    }
   });
 }

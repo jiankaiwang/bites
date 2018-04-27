@@ -15,6 +15,7 @@
     "bootstrap-toggle": "^2.2.2",
     "connect-redis": "^3.3.3",
     "crypto": "^1.0.1",
+    "directory-exists": "^2.0.0",
     "ejs": "^2.5.9",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "express": "3.2.6",
