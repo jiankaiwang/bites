@@ -81,6 +81,9 @@ exports.index = function(req, res){
     changelangurl: translater(lang, {'en':'/zh_TW', "zh_TW":'/en'}),
     opinion: translater(lang, {'en':'Opinion', "zh_TW":'提供意見'}),
     legendTip: translater(lang, {'en':'Legend', "zh_TW":'圖例'}),
+    routeSnakeHosp: translater(lang, {'en':'Sanke Anti-Serum Hospital', "zh_TW":'抗毒蛇血清醫院'}),
+    routeRabiesVaccHosp: translater(lang, {'en':'Rabies Vaccine Hospital', "zh_TW":'狂犬病疫苗醫院'}),
+    routeRabiesAbHosp: translater(lang, {'en':'Rabies Anti-Serum Hospital', "zh_TW":'狂犬病免疫球蛋白醫院'}),
     loginTitle: translater(lang, {'en':'Select a service to login.', "zh_TW":'選擇一個服務登入'}),
     closeLogin: translater(lang, {'en':'Close', "zh_TW":'關閉'}),
     recaptchaSiteKey: "6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"

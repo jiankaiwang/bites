@@ -9,6 +9,14 @@ html, body {
     font-family: monospace, Microsoft JhengHei, sans-serif; 
 }
 
+h1.popover-title
+, h2.popover-title
+, h3.popover-title
+, h4.popover-title
+, h5.popover-title {
+	font-family: monospace, Microsoft JhengHei, sans-serif;
+}
+
 #mapid { 
     height: 100%; 
     width: 100%;
@@ -116,6 +124,11 @@ A.tmpRemove {
 	margin-left: -16px;
 }
 
+.no-magin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
 .fa-half1p8x {
 	padding-top: 3px;
 	font-size: 1.8rem;
@@ -168,6 +181,10 @@ input[type="text"]:focus {
 
 .padding-left-4px {
 	padding-left: 4px;
+}
+
+.padding-right-15px {
+	padding-right: 15px;
 }
 
 .margin-top-3px {

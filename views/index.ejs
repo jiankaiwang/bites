@@ -131,7 +131,7 @@
             <div class="enlarge-row">
               <div class="row">
                   <div class="input-slider-ctd">
-                    <input id="ex21" type="text"
+                    <input id="rangeslider" type="text"
                       data-provide="slider"
                       data-slider-ticks="[1, 2, 3]"
                       data-slider-ticks-labels='["<%= r0 %>", "<%= r500 %>", "<%= r1000 %>"]'
@@ -327,11 +327,11 @@
                         <div class="col-md-6"><i class="fa fa-compass"></i> <%= reportArea %></div>
                         <div class="col-md-6">
                         <select class="form-control input-sm" id="area">
-                            <option><%= reportArea1 %></option>
-                            <option><%= reportArea2 %></option>
-                            <option><%= reportArea3 %></option>
-                            <option><%= reportArea4 %></option>
-                            <option><%= reportArea5 %></option>
+                            <option value=1 selected><%= reportArea1 %></option>
+                            <option value=2><%= reportArea2 %></option>
+                            <option value=3><%= reportArea3 %></option>
+                            <option value=4><%= reportArea4 %></option>
+                            <option value=5><%= reportArea5 %></option>
                         </select>
                         </div>
                     </div>
@@ -455,8 +455,46 @@
     <!-- detail -->
     <div id="detail"></div>
 
-    <!-- chatbot -->
-    <div id="chatbot"></div>
+    <!-- popover -->
+    <div id="popover-content-hospInfo" class="hide">
+      <div class="enlarge-row" onclick="javascript: routeSnakeHosp();">
+        <div>
+          <button type="button" class="btn btn-default btn-sm full-btn" >
+            <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
+              <i class="fa fa-location-arrow" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
+              <%= routeSnakeHosp %>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="enlarge-row" onclick="javascript: routeRabiesVaccHosp();">
+        <div>
+          <button type="button" class="btn btn-default btn-sm full-btn" >
+            <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
+              <i class="fa fa-location-arrow" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
+              <%= routeRabiesVaccHosp %>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="enlarge-row" onclick="javascript: routeRabiesAbHosp();">
+        <div>
+          <button type="button" class="btn btn-default btn-sm full-btn" >
+            <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
+              <i class="fa fa-location-arrow" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
+              <%= routeRabiesAbHosp %>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    
 
     <!-- javascript -->
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>	
