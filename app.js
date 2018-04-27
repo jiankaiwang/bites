@@ -17,6 +17,7 @@ var sc = require('./configure/sysconfig')
   , path = require('path')
   , bodyParser = require('body-parser')
   , app = express()
+  , fs = require('fs')
   , directoryExists = require('directory-exists');
 
 var api = require('./routes/api')
