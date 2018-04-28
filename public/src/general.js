@@ -156,6 +156,20 @@ function addPointService() {
  * desc : add legend 
  */
 function addLegendBody(previousInfo, callback) {
+	function retsnakeInYear() { return '<div class="circle circle-red circle-float"></div>'; }
+	addLegendBody.retsnakeInYear = retsnakeInYear;
+	function retsnakeMoreYear() { return '<div class="circle circle-light-red circle-float"></div>'; }
+	addLegendBody.retsnakeMoreYear = retsnakeMoreYear;
+	function retrabiesInYear() { return '<div class="circle circle-orange circle-float"></div>'; }
+	addLegendBody.retrabiesInYear = retrabiesInYear;
+	function retrabiesMoreYear() { return '<div class="circle circle-light-orange circle-float"></div>'; }
+	addLegendBody.retrabiesMoreYear = retrabiesMoreYear;
+	function retsnakehosp() { return '<i class="fa fa-ambulance" aria-hidden="true"></i>'; }
+	addLegendBody.retsnakehosp = retsnakehosp;
+	function retrabieshosp() { return '<i class="fa fa-plus-square" aria-hidden="true"></i>'; }
+	addLegendBody.retrabieshosp = retrabieshosp;
+
+
 	function generateLegendText(attr, text) {
 		return '<div class="row legend-row">' + attr + '&nbsp;' 
 		+ '<span>' + text + '</span></div>';
@@ -163,12 +177,12 @@ function addLegendBody(previousInfo, callback) {
 
 	$('.legendBody').html(
 		generateLegendText('<div class="circle circle-blue circle-float"></div>', frontTranslation("selfPos",defaultLang))
-		+ generateLegendText('<div class="circle circle-red circle-float"></div>', frontTranslation("snakeInYear",defaultLang))
-		+ generateLegendText('<div class="circle circle-light-red circle-float"></div>', frontTranslation("snakeMoreYear",defaultLang))
-		+ generateLegendText('<div class="circle circle-orange circle-float"></div>', frontTranslation("rabiesInYear",defaultLang))
-		+ generateLegendText('<div class="circle circle-light-orange circle-float"></div>', frontTranslation("rabiesMoreYear",defaultLang))
-		+ generateLegendText('<i class="fa fa-ambulance" aria-hidden="true"></i>', frontTranslation("snakehosp",defaultLang))
-		+ generateLegendText('<i class="fa fa-plus-square" aria-hidden="true"></i>', frontTranslation("rabieshosp",defaultLang))
+		+ generateLegendText(retsnakeInYear(), frontTranslation("snakeInYear",defaultLang))
+		+ generateLegendText(retsnakeMoreYear(), frontTranslation("snakeMoreYear",defaultLang))
+		+ generateLegendText(retrabiesInYear(), frontTranslation("rabiesInYear",defaultLang))
+		+ generateLegendText(retrabiesMoreYear(), frontTranslation("rabiesMoreYear",defaultLang))
+		+ generateLegendText(retsnakehosp(), frontTranslation("snakehosp",defaultLang))
+		+ generateLegendText(retrabieshosp(), frontTranslation("rabieshosp",defaultLang))
 	);
 }
 

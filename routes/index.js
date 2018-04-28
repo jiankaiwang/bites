@@ -84,6 +84,9 @@ exports.index = function(req, res){
     routeSnakeHosp: translater(lang, {'en':'Sanke Anti-Serum Hospital', "zh_TW":'抗毒蛇血清醫院'}),
     routeRabiesVaccHosp: translater(lang, {'en':'Rabies Vaccine Hospital', "zh_TW":'狂犬病疫苗醫院'}),
     routeRabiesAbHosp: translater(lang, {'en':'Rabies Anti-Serum Hospital', "zh_TW":'狂犬病免疫球蛋白醫院'}),
+    imageRecognition: translater(lang, {'en':'Ai for Image Recognition', "zh_TW":'人工智慧辨識毒蛇種類'}),
+    imageRecognitionResult: translater(lang, {'en':'Image Recognition Result', "zh_TW":'辨識結果'}),
+    imagesend: translater(lang, {'en':'Upload', "zh_TW":'上傳圖片'}),
     loginTitle: translater(lang, {'en':'Select a service to login.', "zh_TW":'選擇一個服務登入'}),
     closeLogin: translater(lang, {'en':'Close', "zh_TW":'關閉'}),
     recaptchaSiteKey: "6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"

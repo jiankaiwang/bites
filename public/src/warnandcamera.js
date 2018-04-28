@@ -42,12 +42,12 @@ function addWarningAndCameraBtnToMap(previous,callback) {
                 + frontTranslation("hospBtn",defaultLang)
                 + '" role="button" data-toggle="popover" data-container="body" data-placement="left" type="button" data-html="true">'
                 + '<i class="fa fa-h-square small-ubtn" aria-hidden="true"></i></a>';
-                control_htm += '<a class="leaflet-control-zoom-in" href="#" title="'
+                control_htm += '<a class="leaflet-control-zoom-in" href="#" id="warningInfo" title="'
 				+ frontTranslation("warningBtn",defaultLang)
-                + '" role="button" onclick="__showWarningPop();"><i class="fa fa-bullhorn small-ubtn" aria-hidden="true"></i></a>';
+                + '" role="button" data-toggle="popover" data-container="body" data-placement="left" type="button" data-html="true"><i class="fa fa-bullhorn small-ubtn" aria-hidden="true"></i></a>';
                 control_htm += '<a class="leaflet-control-zoom-in" href="#" title="'
 				+ frontTranslation("imageBtn",defaultLang)
-                + '" role="button" onclick="__imageRecognition();"><i class="fa fa-camera small-ubtn" aria-hidden="true"></i></a>';
+                + '" role="button" data-toggle="modal" data-target="#imagesection"><i class="fa fa-camera small-ubtn" aria-hidden="true"></i></a>';
             div.innerHTML = control_htm;
             div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
             L.DomEvent.disableClickPropagation(div);

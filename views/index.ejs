@@ -294,6 +294,41 @@
           <%= legendTip %>
       </div>
     </div>
+
+    <div class="modal fade" id="imagesection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><%= imageRecognition %></h4>
+            </div>
+            <div class="modal-body">  
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-12 text-center"><%= uploadimg %></div>
+                        <div class="col-md-12 text-center">
+                          <input name="uploadImg" type="file" accept="image/gif, image/jpeg, image/png">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row"><hr /></div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                        <div class="col-md-12 text-center"><%= imageRecognitionResult %></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <div class="row col-md-12 col-lg-12 section-row">
+                      <div class="g-recaptcha" data-sitekey="6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary uploadicp"><%= imagesend %></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><%= reportclose %></button>
+            </div>
+          </div>
+        </div>
+    </div>
       
     <!-- Modal for reporting -->
     <div class="modal fade" id="reportsection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -457,6 +492,7 @@
 
     <!-- popover -->
     <div id="popover-content-hospInfo" class="hide">
+      <div class="hospInfo-body">
       <div class="enlarge-row" onclick="javascript: routeSnakeHosp();">
         <div>
           <button type="button" class="btn btn-default btn-sm full-btn" >
@@ -492,6 +528,24 @@
             </div>
           </button>
         </div>
+      </div>
+      </div>
+    </div>
+
+    <div id="popover-content-warningInfo" class="hide">
+      <div class="warning-body overflow-x-hidden overflow-y-scroll">
+
+        <div class="enlarge-row">
+          <button type="button" class="btn btn-default btn-sm full-btn" >
+            <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
+              <div class="circle circle-red circle-float"></div>
+            </div>
+            <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
+              2018/04/28 眼鏡蛇出沒
+            </div>
+          </button>
+        </div>
+
       </div>
     </div>
     
