@@ -40,6 +40,13 @@ var systemEffect = {
 	, warning: {
 		notify_min: 10
 	}
+	, setViewLevel: 15
+	, routingTip: {
+		color: 'blue',
+		weight: 5,
+		opacity: '0.6',
+		smoothFactor: 3
+	}
 };
 
 /*
@@ -261,13 +268,19 @@ function legendScaled() {
 	}
 }
 
+function setCrtLocOnMap() {
+	if(getDictionaryLength(getAllParams.getSelfLoc()) > 0) {
+		mymap.setView(getAllParams.getSelfLoc(), systemEffect.setViewLevel);
+	}
+}
+
 /**
  * desc: prepare the environment parameters
  */
 function getAllParams() {
 	function getSelfLoc() {
 		if(selfLoc.length > 0) { return selfLoc[0]["_latlng"]; }
-		else { return([]); }
+		else { return({}); }
 	}
 	getAllParams.getSelfLoc = getSelfLoc;
 

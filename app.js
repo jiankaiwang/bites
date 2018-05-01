@@ -18,7 +18,8 @@ var sc = require('./configure/sysconfig')
   , bodyParser = require('body-parser')
   , app = express()
   , fs = require('fs')
-  , directoryExists = require('directory-exists');
+  , directoryExists = require('directory-exists')
+  , routeapi = require('./routes/routeapi');
 
 var api = require('./routes/api')
   , api_service = require('./routes/api_service');
@@ -87,6 +88,7 @@ app.get('/zh_TW', routes.index);
 app.get('/en', routes.index);
 app.all('/api', api.portal);
 app.all('/api/service', api_service.portal);
+app.get('/api/routeapi', routeapi.list);
 
 /*
  * desc : open http / https server 
