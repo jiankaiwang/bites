@@ -164,3 +164,6 @@ venv.bak/
 
 # ide configuration
 *.code-workspace
+
+# tmp
+tmp/

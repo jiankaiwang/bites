@@ -43,10 +43,22 @@ var systemEffect = {
 	, setViewLevel: 15
 	, routingTip: {
 		color: 'blue',
-		weight: 5,
+		weight: 8,
 		opacity: '0.6',
 		smoothFactor: 3
 	}
+	, routingTip2: {
+		color: 'blue',
+		weight: 4,
+		opacity: '0.3',
+		smoothFactor: 3
+	}
+};
+
+var positionContainer = {
+	"hospital":[],
+	"snake":[],
+	"rabies":[]
 };
 
 /*
@@ -157,6 +169,44 @@ function addPointService() {
 			}).addTo(mymap);
 		}
 	});
+}
+
+function prepare_popup(dictData, exclude_key) {
+	var keys = getDictionaryKeyList(dictData);
+	var listInfo = "";
+	for(var i = 0 ; i < keys.length; i++) {
+		if(exclude_key.indexOf(keys[i]) > -1) { continue; }
+		if(keys[i] == "十碼章") {
+			listInfo += "看診時段: <a href='http://www.nhi.gov.tw/QueryN/Query3_Detail.aspx?HospID=" 
+			+ dictData[keys[i]] + "' target=_blank><span class='text-color-blue'>網頁連結</span></a><br>";
+		} else {
+			listInfo += keys[i] + ": " + dictData[keys[i]] + "<br>";
+		}
+	}
+	return listInfo;
+}
+
+function add_hosp_mark(hosp_type, hosp_info) {
+	var __hospIcon = null;
+
+	if(hosp_type == 1) {
+		__hospIcon = L.AwesomeMarkers.icon({
+			icon: 'ambulance',
+			prefix: 'fa',
+			markerColor: 'green'
+		});
+	} else if (hosp_type == 2) {
+		__hospIcon = L.AwesomeMarkers.icon({
+			icon: 'plus',
+			prefix: 'fa',
+			markerColor: 'green'
+		});
+	}
+
+	var hospLoc = [hosp_info["緯度"], hosp_info["經度"]];
+	var hospObj = new L.marker(hospLoc, {icon: __hospIcon});
+	hospObj.bindPopup(prepare_popup(hosp_info, ["經度","緯度","區域別"]));
+	positionContainer["hospital"].push(hospObj.addTo(mymap));
 }
 
 /*
@@ -271,6 +321,61 @@ function legendScaled() {
 function setCrtLocOnMap() {
 	if(getDictionaryLength(getAllParams.getSelfLoc()) > 0) {
 		mymap.setView(getAllParams.getSelfLoc(), systemEffect.setViewLevel);
+	}
+}
+
+function routeSnakeHosp() {
+	// fetch latest setting
+	getAllParams();
+
+	if(getDictionaryKeyList(allParams["selfLoc"]).length < 1) {
+		console.log("you have to position yourself first");
+		return ;
+	}
+
+	$.ajax({
+		url: '/api/nearesthospital?loc=' + allParams["selfLoc"]["lng"] + ';' + allParams["selfLoc"]["lat"] + '&hosp=1',
+		type: 'get',
+		data: {},
+		error: function (xhr, ajaxOptions, thrownError) {
+			console.log(xhr.status + " " + thrownError + ". Cannot connect to /api/nearesthospital.");
+			$('#hospInfo').html('<i class="fa fa-exclamation-triangle small-ubtn" aria-hidden="true"></i>');
+		},
+		success: function (response) {
+			if(response["status"] == "success") {
+				for(var i = 0 ; i < response["result"].length ; i++) {
+					// add to the hosp list and add to the map
+					add_hosp_mark(1, response["result"][i]);
+					// routing the map
+					addRoutingPath(
+						response["result"][i]["十碼章"]
+						,(i+1)
+						,[allParams["selfLoc"]["lng"], allParams["selfLoc"]["lat"]]
+						,[response["result"][i]["經度"], response["result"][i]["緯度"]]
+					)
+				}
+			} else {
+				console.log("API hosp=1 response but it is failure status");
+				$('#hospInfo').html('<i class="fa fa-exclamation-triangle small-ubtn" aria-hidden="true"></i>');
+			}
+		}
+	});
+}
+
+function notifySelfPosition() {
+	d3.select("#selfposbtn").style("color", "black")
+		.transition().delay(750).style("color", "red")
+		.transition().delay(750).style("color", "black")
+		.transition().delay(750).style("color", "red")
+		.transition().delay(750).style("color", "black");
+}
+
+function checkSelfLoc() {
+	// fetch latest setting
+	getAllParams();
+
+	if(getDictionaryKeyList(allParams["selfLoc"]).length < 1) {
+		notifySelfPosition();
 	}
 }
 

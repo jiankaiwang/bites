@@ -133,6 +133,14 @@ exports.byteCount = function(getStr) {
     return encodeURI(getStr).split(/%..|./).length - 1;
 };
 
-
+/**
+ * desc: swap element in the list
+ */
+exports.swap = function([a, b]) {
+	var c = a;
+	a = b;
+	b = c;
+	return [a, b];
+}
 
 

@@ -2,13 +2,25 @@
  * desc: the front-end script to add paths into the mymap
  */
 
-var __locList = [];
+// {"code": [path1], "code": [path2]}
+var all_path_list = {};
+
 
 // remove all layers on mymap
+/*
+var __locList = [];
 function removeAllLayersFromMap() {
     if(__locList.length > 0) {
         for(var i = 0 ; i < __locList.length ; i++) {
             mymap.removeLayer(__locList[i]);
+        }
+    }
+}*/
+
+function removeCrtCodePathFromMap(code) {
+    if(all_path_list[code].length > 0) {
+        for(var i = 0 ; i < all_path_list[code].length ; i++) {
+            mymap.removeLayer(all_path_list[code][i]);
         }
     }
 }
@@ -16,12 +28,22 @@ function removeAllLayersFromMap() {
 /* 
  * desc: add path from osrm
  * para: 
+ * |- code: e.g. hospital code
+ * |- major: 1(most important), 2, 3, ...
  * |- beginning: ["lon(x)","lat(y)"]
  * |- ending: ["lon(x)", "lat(y)"]
- * e.g.: addRoutingPath([121.522685,25.042796],[121.532535,25.033178])
+ * e.g.: addRoutingPath(code, 1, [121.522685,25.042796],[121.532535,25.033178])
  */ 
-function addRoutingPath(beginning, ending) {  
-    var routeService = "/api/routeapi?loc=" + 
+function addRoutingPath(code, major, beginning, ending) {  
+    var allPathCode = getDictionaryKeyList(all_path_list);
+    if(allPathCode.indexOf(code) > -1) {
+        // clear the current route
+        removeCrtCodePathFromMap(code);
+    } else {
+        all_path_list[code] = [];
+    }
+
+    var routeService = "https://bites.cdc.gov.tw/api/routeapi?loc=" + 
 		'' + beginning[0] + ',' + beginning[1] +
 		';' + ending[0] + ',' + ending[1];
 	
@@ -33,12 +55,9 @@ function addRoutingPath(beginning, ending) {
 		datatype: 'json',
 		timeout: 10*1000,
 		beforeSend: function() {},
-		success: function (msg) {
-			// clear the current route
-			removeAllLayersFromMap();
-			
+		success: function (msg) {			
             // start to show the current route
-            __showRoutePath(msg);
+            __showRoutePath(code, major, msg);
             setCrtLocOnMap();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -50,7 +69,28 @@ function addRoutingPath(beginning, ending) {
  /*
  * desc : show the whole route path
  */
-function __showRoutePath(data) {
+function __showRoutePath(code, major, data) {
+    function retMajorStyle() {
+        switch(major) {
+            case 1:
+                return {
+                    //className: __getRouteClass(),
+                    color: systemEffect["routingTip"]["color"],
+                    weight: systemEffect["routingTip"]["weight"],
+                    opacity: systemEffect["routingTip"]["opacity"],
+                    smoothFactor: systemEffect["routingTip"]["smoothFactor"]
+                };
+            default:
+                return {
+                    //className: __getRouteClass(),
+                    color: systemEffect["routingTip2"]["color"],
+                    weight: systemEffect["routingTip2"]["weight"],
+                    opacity: systemEffect["routingTip2"]["opacity"],
+                    smoothFactor: systemEffect["routingTip2"]["smoothFactor"]
+                };
+        }
+    }
+
     // add the information
     __sumName = data["routes"][0]["legs"][0]["summary"];
     __allLine = [];
@@ -94,14 +134,9 @@ function __showRoutePath(data) {
                     
                     // draw the line
                     lineRange = [startPoint, endPoint];
-                    var routePolyline = new L.Polyline(lineRange, {
-                        //className: __getRouteClass(),
-                        color: systemEffect["routingTip"]["color"],
-                        weight: systemEffect["routingTip"]["weight"],
-                        opacity: systemEffect["routingTip"]["opacity"],
-                        smoothFactor: systemEffect["routingTip"]["smoothFactor"]
-                    });
-                    __locList.push(routePolyline);
+                    var routePolyline = new L.Polyline(lineRange, retMajorStyle());
+                    //__locList.push(routePolyline);
+                    all_path_list[code].push(routePolyline);
                     routePolyline.addTo(mymap);
                     
                     // the current end point is the next start point

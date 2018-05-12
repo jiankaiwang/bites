@@ -19,7 +19,8 @@ var sc = require('./configure/sysconfig')
   , app = express()
   , fs = require('fs')
   , directoryExists = require('directory-exists')
-  , routeapi = require('./routes/routeapi');
+  , routeapi = require('./routes/routeapi')
+  , nearesthospital = require('./routes/nearesthospital');
 
 var api = require('./routes/api')
   , api_service = require('./routes/api_service');
@@ -89,6 +90,7 @@ app.get('/en', routes.index);
 app.all('/api', api.portal);
 app.all('/api/service', api_service.portal);
 app.get('/api/routeapi', routeapi.list);
+app.get('/api/nearesthospital', nearesthospital.list);
 
 /*
  * desc : open http / https server 

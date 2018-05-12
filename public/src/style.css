@@ -28,7 +28,7 @@ h1.popover-title
 }
 
 A:link {
-	color: black; 
+	color: black;
 	text-decoration: none; 
 	font-family: monospace, Microsoft JhengHei, sans-serif; 
 }
@@ -237,6 +237,14 @@ input[type="text"]:focus {
 	max-height: 300px;
 }
 
+.color-gray {
+	color: rgba(200, 200, 200, 0.8);
+}
+
+.text-color-blue {
+	color: rgba(0,162,232,1);
+}
+
 /* user */
 .user-notify {
 	top: 0px;
@@ -328,6 +336,11 @@ input[type="text"]:focus {
 
 .circle-red {
 	background: rgba(255,0,0,0.8);
+    border: 1px solid rgba(0,0,0,1);
+}
+
+.circle-blank {
+	background: rgba(255,255,255,1);
     border: 1px solid rgba(0,0,0,1);
 }
 
@@ -459,6 +472,17 @@ input[type="text"]:focus {
 /* btn in menu */
 .full-btn {
 	width: 100%;
+}
+
+/* question */
+.question {
+	padding-top: 5px;
+	padding-bottom: 10px;
+	clear: both;
+}
+
+.question:hover { 
+
 }
 
 /*

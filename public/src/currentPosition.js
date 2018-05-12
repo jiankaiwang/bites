@@ -45,6 +45,12 @@ function __showCurrentLocation() {
 		//selfLoc.push(new L.circleMarker(e.latlng, geojsonMarkerOptions).addTo(mymap));
 		selfLoc.push(new L.circle(e.latlng, 500).addTo(mymap));
 		selfLoc.push(new L.marker(e.latlng, {icon: __selfIcon}).addTo(mymap));
+
+		// reset the button from file "warnandcamera.js"
+		retHospAndWarningBtn();
+
+		// find risk rabies position from "addRabies.js"
+		addRabiesInOneYear();
 	}
 
 	function onLocationError(e) {
@@ -67,7 +73,7 @@ function addSelfLocBtnToMap(previous,callback) {
         crtPosLoc.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'leaflet-control-zoom leaflet-bar leaflet-control');
             div.style.backgroundColor = 'white';
-            var control_htm = '<a class="leaflet-control-zoom-in" href="#map" title="'
+            var control_htm = '<a id="selfposbtn" class="leaflet-control-zoom-in" href="#map" title="'
 				+ frontTranslation("selfLocBtn",defaultLang)
                 + '" role="button" onclick="__showCurrentLocation();"><i class="fa fa-map-marker main-btn" aria-hidden="true"></i></a>';
             div.innerHTML = control_htm;
@@ -75,7 +81,8 @@ function addSelfLocBtnToMap(previous,callback) {
             L.DomEvent.disableClickPropagation(div);
             return div;
         };
-        crtPosLoc.addTo(mymap);
+		crtPosLoc.addTo(mymap);
+
         callback(null, "");
     } catch(err) {
         callback(err);

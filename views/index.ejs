@@ -54,8 +54,32 @@
             <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= askrabiesbite%></div>
         </div>
         <hr class="hr-menu" />
-        <div class="row">
-
+        <div class="enlarge-row question show-curosr">
+            <div class="col-xs-1 col-md-1">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10">
+                臺灣有哪些常見毒蛇?
+            </div>
+            <div class="col-xs-1 col-md-1"></div>
+        </div>
+        <div class="enlarge-row question show-curosr">
+            <div class="col-xs-1 col-md-1">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10">
+                台灣目前有哪幾種抗蛇毒血清?
+            </div>
+            <div class="col-xs-1 col-md-1"></div>
+        </div>
+        <div class="enlarge-row question show-curosr">
+            <div class="col-xs-1 col-md-1">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10">
+                被毒蛇咬傷有甚麼症狀?
+            </div>
+            <div class="col-xs-1 col-md-1"></div>
         </div>
       </div>
     </div>
@@ -517,7 +541,7 @@
           </button>
         </div>
       </div>
-      <div class="enlarge-row" onclick="javascript: routeRabiesAbHosp();">
+      <!--<div class="enlarge-row" onclick="javascript: routeRabiesAbHosp();">
         <div>
           <button type="button" class="btn btn-default btn-sm full-btn" >
             <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
@@ -528,14 +552,15 @@
             </div>
           </button>
         </div>
-      </div>
+      </div>-->
       </div>
     </div>
 
     <div id="popover-content-warningInfo" class="hide">
       <div class="warning-body overflow-x-hidden overflow-y-scroll">
 
-        <div class="enlarge-row">
+        <div class="enlarge-row" id="warning-body-content">
+          <!--
           <button type="button" class="btn btn-default btn-sm full-btn" >
             <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
               <div class="circle circle-red circle-float"></div>
@@ -544,6 +569,7 @@
               2018/04/28 眼鏡蛇出沒
             </div>
           </button>
+          -->
         </div>
 
       </div>
@@ -559,13 +585,15 @@
     <script src="/node_modules/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>  
     <script src="/node_modules/moment/min/moment.min.js"></script>  
     <script src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/node_modules/d3/dist/d3.min.js"></script>
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>  
     <script src="/async/async.min.js"></script>
     <script src="/seed/Common.js"></script>
     <script src="/seed/TimeCounter.js"></script>
     <script src="/src/config.js"></script>  
+    <script src="/src/addRabies.js"></script>
+    <script src="/src/warnandcamera.js"></script>    
     <script src="/src/currentPosition.js"></script>  
-    <script src="/src/warnandcamera.js"></script>
     <script src="/src/addMenu.js"></script>
     <script src="/src/routing.js"></script>
     <script src="/src/general.js"></script>  
