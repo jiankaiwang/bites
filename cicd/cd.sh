@@ -35,10 +35,14 @@ elif [ $execRes = 0 ]; then
     systemctl status bites.service
     cd $cdPath
     originVer=$(git rev-parse HEAD)
+    git checkout -- .
     git checkout master
     git pull --rebase
     lastVer=$(git rev-parse HEAD)
     npm install
+    # replace the sysconf
+    rm -rf $cdPath/configure/sysconfig.js
+    cp $cdPath/sysconfig.js $cdPath/configure/sysconfig.js
     sudo systemctl start bites.service
     systemctl status bites.service
     echo "$(date),origin:$originVer,latest:$lastVer,Activate CD." >> $cdlog
