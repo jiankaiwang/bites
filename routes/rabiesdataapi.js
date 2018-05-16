@@ -11,7 +11,6 @@ var url = require("url")
   , querystring = require('querystring')
   , wo = require("../controllers/weboperating")
   , http = require('http')
-  , https = require('https')
   , common = require('../controllers/Common')
   , nxtgrid = require('../controllers/networkGrid')
   , sysconfig = require('../configure/sysconfig');
