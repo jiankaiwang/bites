@@ -92,6 +92,8 @@ function __set_crt_latlng(latlng, selfIcon) {
 		setTimeout(function() {
 			//console.log(addSelfMarker._latlng);
 			__set_crt_latlng(addSelfMarker._latlng, selfIcon);
+			// set the parameters
+			setAutoPosition(false);
 		}, 100);
 	});
 	addSelfMarker.addTo(mymap);
@@ -111,8 +113,18 @@ function __set_crt_latlng(latlng, selfIcon) {
 	addRabiesData();
 }
 
+function setAutoPosition(state) {
+	if(state) {
+		$('#positioning').find('input').prop('checked',true);
+		$('#positioning').find('input').click();
+	} else {
+		$('#positioning').find('input').prop('checked',false);
+		$('#positioning').find('input').click();
+	}
+}
+
 /**
- * 
+ * desc: retrieve input address
  */
 function __retrieveInputAddress() {
 	var address = $($('input#searchAddress')[1]).val();
@@ -127,6 +139,8 @@ function __retrieveInputAddress() {
 		success: function (response) {
 			if(response["status"] == "success") {
 				__set_crt_latlng(response["response"], __selfIcon);
+				// set the parameters
+				setAutoPosition(false);
 				mymap.setView(response["response"], 12);
 			} else {
 				console.log(response["response"]);
@@ -171,9 +185,15 @@ function getGridList(lat, lng, zone) {
 /*
  * desc : show myself location
  */
-function __showCurrentLocation() {
+function __showCurrentLocation(setviewflag) {
 	// add the marker and circle
 	function onLocationFound(e) {
+		function checkSameLoc(loc1, loc2) {
+			var checkLoc1 = [parseInt(Math.round(loc1["lat"] * 1e7)), parseInt(Math.round(loc1["lng"] * 1e7))];
+			var checkLoc2 = [parseInt(Math.round(loc2["lat"] * 1e7)), parseInt(Math.round(loc2["lng"] * 1e7))];
+			return (checkLoc1[0] == checkLoc2[0]) && (checkLoc1[1] == checkLoc2[1]);
+		}
+
 		// label current circle marker
 		var geojsonMarkerOptions = {
 			radius: 6,
@@ -184,7 +204,17 @@ function __showCurrentLocation() {
 			fillOpacity: 0.8
 		};
 		
-		__set_crt_latlng(e.latlng, __selfIcon);
+		if(getDictionaryLength(allParams["selfLoc"]) < 1) {
+			__set_crt_latlng(e.latlng, __selfIcon);
+
+			// set the parameters
+			setAutoPosition(true);
+		} else {
+			var getLoc = e.latlng;
+			if(! (checkSameLoc(getLoc,allParams["selfLoc"]))) {
+				__set_crt_latlng(getLoc, __selfIcon);
+			}
+		}
 	}
 
 	function onLocationError(e) {
@@ -193,7 +223,11 @@ function __showCurrentLocation() {
 
 	mymap.on('locationfound', onLocationFound);
 	mymap.on('locationerror', onLocationError);
-	mymap.locate({ setView: true, maxZoom: 12 });
+	if(setviewflag) {
+		mymap.locate({ setView: true, maxZoom: 12 });
+	} else {
+		mymap.locate();
+	}
 }
 
 /**

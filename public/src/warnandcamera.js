@@ -69,3 +69,28 @@ function addWarningAndCameraBtnToMap(previous,callback) {
         callback(err);
     }
 }
+
+function addTutorialBtn(previous,callback) {
+    try{
+        // current location
+        var crtPosLoc = L.control({ position: 'bottomright' });
+        crtPosLoc.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-control-zoom leaflet-bar leaflet-control');
+            div.style.backgroundColor = 'white';
+            var control_htm = '';
+                control_htm += '<a class="leaflet-control-zoom-in" href="#" title="'
+                + frontTranslation("tutorialInfo",defaultLang)
+                + '" role="button" data-toggle="modal" data-target="#tutorialsection">'
+                + '<i class="fa fa-tag small-ubtn" aria-hidden="true"></i></a>';
+            div.innerHTML = control_htm;
+            div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        crtPosLoc.addTo(mymap);
+        init_popup();
+        callback(null, "");
+    } catch(err) {
+        callback(err);
+    }
+}

@@ -8,6 +8,7 @@ var positionContainer = {
 	"snake":{},
 	"rabies":{}
 };
+var tutorialData = {};
 
 /*
  * desc : api checker
@@ -558,6 +559,84 @@ function preloadSearch(data) {
 	fetchQA();
 }
 
+/**
+ * desc: start tutorial
+ */
+function showTutorialMore() {
+	if($('.tutorial-desc').hasClass('display-none')) {
+		$('.tutorial-desc').removeClass('display-none');
+		$('.showTutorialMore').addClass('display-none');
+	}
+}
+
+function tutorialBack() {
+	var getTutorialIndex = parseInt($('.tutorial-cnt').html());
+	if(getTutorialIndex < 2) { return ; }
+	setTutorialData(getTutorialIndex - 1);
+}
+
+function tutorialForward() {
+	var allKey = getDictionaryKeyList(tutorialData);
+	var getTutorialIndex = parseInt($('.tutorial-cnt').html());
+	if(allKey.indexOf(String(getTutorialIndex + 1)) < 0) { return ; }
+	setTutorialData(getTutorialIndex + 1);
+}
+
+function setTutorialData(idx) {
+	var getIdx = parseInt(idx);
+	var allKey = getDictionaryKeyList(tutorialData);
+	if(getIdx < 2) {
+		if($('#tutorialBack').hasClass('btn-primary')) {
+			$('#tutorialBack').removeClass('btn-primary')
+		}
+	} else {
+		if(! $('#tutorialBack').hasClass('btn-primary')) {
+			$('#tutorialBack').addClass('btn-primary')
+		}
+	}
+	if(allKey.indexOf(String(idx + 1)) < 0) { 
+		if($('#tutorialForward').hasClass('btn-primary')) {
+			$('#tutorialForward').removeClass('btn-primary')
+		}
+	} else {
+		if(! $('#tutorialForward').hasClass('btn-primary')) {
+			$('#tutorialForward').addClass('btn-primary')
+		}
+	}
+	$('.tutorial-cnt').html(getIdx);
+	$('#tutorialTitle').html(tutorialData[idx]["title"]);
+	$('#tutorialBody').html(tutorialData[idx]["content"]);
+}
+
+function startTutorial() {
+	$.ajax({
+		url: '/data/tutorial.json',
+		type: 'get',
+		data: {},
+		error: function (xhr, ajaxOptions, thrownError) {
+			console.log(xhr.status + " " + thrownError + ". Cannot get tutorial data.");
+		},
+		success: function (response) {
+			tutorialData = response;
+			setTutorialData(1);
+			$('#starttutorial').click();
+		}
+	});
+}
+
+/*
+ * desc: run on background
+ */
+function setTimeFunc() {
+	setInterval(function() {
+		getAllParams();
+		if(getDictionaryLength(allParams["selfLoc"]) > 0 && allParams["settings"]["positioning"]) {
+			__showCurrentLocation(false);
+		}
+	}, parseInt(run_peroid));
+}
+
+
 /* 
  * desc : main entry 
  */
@@ -573,6 +652,9 @@ $(function() {
 
 		// add warning button
 		, addWarningAndCameraBtnToMap
+
+		// add tutorial button
+		, addTutorialBtn
 
 		// add legend body
 		, addLegendBody
@@ -591,5 +673,9 @@ $(function() {
 
 	// initialization
 	getAllParams();
+	startTutorial();
 	notifySelfPosition();
+
+	// run on background
+	setTimeFunc();
 });

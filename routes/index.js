@@ -94,6 +94,8 @@ exports.index = function(req, res){
     imagesend: translater(lang, {'en':'Upload', "zh_TW":'上傳圖片'}),
     loginTitle: translater(lang, {'en':'Select a service to login.', "zh_TW":'選擇一個服務登入'}),
     closeLogin: translater(lang, {'en':'Close', "zh_TW":'關閉'}),
+    previousTutorial: translater(lang, {'en':'Previous Tip', "zh_TW":'前一項'}),
+    nextTutorial: translater(lang, {'en':'Next Tip', "zh_TW":'下一項'}),
     recaptchaSiteKey: "6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"
   });
 };

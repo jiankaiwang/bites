@@ -4,6 +4,7 @@
  * |- baseMapZoomConf : the max and min zoom
  * |- allBaseLayers : available layers added to the basemap
  * |- layerTypeName : define all layer names
+ * |- run_peroid : milli-second to update the self location
  */
 var defaultLang = ""; 
 var baseMapZoomConf = { "min" : 3, "max" : 16 }; 
@@ -11,6 +12,7 @@ var crtLoc = [23.785273, 121.018374];
 var zoomLevel = 7;
 var allBaseLayers = [];
 var layerTypeName = {};
+var run_peroid = 3000;
 
 /****************************************************************
  * desc : language translation
@@ -84,4 +86,5 @@ var front_translation = {
 	, "rabiesMoreYear": { "en": "Radies Animal (> 1yr)", "zh_TW": "歷史狂犬病動物出沒" }
 	, "snakehosp": {'en':'Anti-serum Hosp', "zh_TW":'有蛇毒抗血清醫院'}
 	, "rabieshosp": {'en':'Rabies Vaccine Hosp', "zh_TW":'狂犬病疫苗醫院'}
+	, "tutorialInfo": {'en':'Show Tutorial', "zh_TW":'顯示導覽'}
 };

@@ -359,6 +359,39 @@
         </div>
       </div>
   </div>
+
+    <!-- modal for tutorial -->
+    <a href="#" id="starttutorial" class="display-none" data-toggle="modal" data-target="#tutorialsection"></a>
+    <div class="modal fade" id="tutorialsection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content tutorial-body">
+          <span class="tutorial-cnt display-none"></span>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="tutorialTitle"></h4>
+          </div>
+          <div class="modal-body">  
+              <div id="qaIndex" class="display-none"></div>
+              <div class="container-fluid">
+                  <div class="row col-md-12 col-lg-12 section-row" id="tutorialBody">
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="tutorialBack" onclick="javascript: tutorialBack();">
+                &nbsp;<i class="fa fa-step-backward" aria-hidden="true"></i>&nbsp;
+                <%= previousTutorial %>
+              </button>
+              <button type="button" class="btn btn-primary" id="tutorialForward" onclick="javascript: tutorialForward();">
+                <%= nextTutorial %>
+                &nbsp;<i class="fa fa-step-forward" aria-hidden="true"></i>&nbsp;                
+              </button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><%= reportclose %></button>
+          </div>
+        </div>
+      </div>
+    </div>  
       
     <!-- Modal for reporting -->
     <div class="modal fade" id="reportsection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -592,7 +625,7 @@
         </div>
 
         <div class="enlarge-row">
-          <button type="button" class="btn btn-default btn-sm full-btn" onclick="__showCurrentLocation();">
+          <button type="button" class="btn btn-default btn-sm full-btn" onclick="__showCurrentLocation(true);">
             <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
             </div>
