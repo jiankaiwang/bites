@@ -18,6 +18,7 @@
     "d3": "^5.3.0",
     "directory-exists": "^2.0.0",
     "ejs": "^2.5.9",
+    "encoding": "^0.1.12",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "express": "3.2.6",
     "express-session": "^1.15.6",

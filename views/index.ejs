@@ -38,7 +38,7 @@
             <input type="text" id="searchingtext" class="form-control input-no-border input-more-width" placeholder="<%= searchingtext %>">
           </div>
           <div class="col-xs-1 col-md-1 show-curosr">
-            <a href="#" class="show-detail" onclick="showDetailList();">
+            <a href="#" class="show-detail" onclick="pinDetailList();fetchQA();">
               <i class="fa fa-search menu-btn fa-half1p8x margin-left--16px light-gray" aria-hidden="true"></i>
             </a>
           </div>
@@ -46,40 +46,20 @@
       </div>
     </div>
     <div class="detail display-none">
-      <div class="container-fluid">
+      <div class="container-fluid margin-bottom-10px">
         <div class="row">
-            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= asksnakebite%></div>
-            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= asksnake%></div>
-            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= askrabies%></div>
-            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px"><%= askrabiesbite%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px" onclick="javascript: preloadSearch('<%= asksnakebite %>');"><%= asksnakebite%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px" onclick="javascript: routeSnakeHosp();"><%= asksnake%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px" onclick="javascript: routeRabiesVaccHosp();"><%= askrabies%></div>
+            <div type="button" class="btn btn-default btn-sm ask-btn-bg margin-5px" onclick="javascript: preloadSearch('<%= askrabiesbite %>');"><%= askrabiesbite%></div>
         </div>
         <hr class="hr-menu" />
-        <div class="enlarge-row question show-curosr">
-            <div class="col-xs-1 col-md-1">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </div>
-            <div class="col-xs-10 col-md-10">
-                臺灣有哪些常見毒蛇?
-            </div>
-            <div class="col-xs-1 col-md-1"></div>
-        </div>
-        <div class="enlarge-row question show-curosr">
-            <div class="col-xs-1 col-md-1">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </div>
-            <div class="col-xs-10 col-md-10">
-                台灣目前有哪幾種抗蛇毒血清?
-            </div>
-            <div class="col-xs-1 col-md-1"></div>
-        </div>
-        <div class="enlarge-row question show-curosr">
-            <div class="col-xs-1 col-md-1">
-              <i class="fa fa-question-circle" aria-hidden="true"></i>
-            </div>
-            <div class="col-xs-10 col-md-10">
-                被毒蛇咬傷有甚麼症狀?
-            </div>
-            <div class="col-xs-1 col-md-1"></div>
+        <div id="showqa-body">
+          <div class="enlarge-row question show-curosr">
+              <div class="col-xs-12 col-md-12">
+                  <i class="fa fa-question-circle" aria-hidden="true"></i> <%= inputSearchNote %>
+              </div>
+          </div>
         </div>
       </div>
     </div>
@@ -158,11 +138,11 @@
                     <input id="rangeslider" type="text"
                       data-provide="slider"
                       data-slider-ticks="[1, 2, 3]"
-                      data-slider-ticks-labels='["<%= r0 %>", "<%= r500 %>", "<%= r1000 %>"]'
+                      data-slider-ticks-labels='["<%= r0 %>", "<%= r1 %>", "<%= r2 %>"]'
                       data-slider-min="1"
                       data-slider-max="3"
                       data-slider-step="1"
-                      data-slider-value="2"
+                      data-slider-value="3"
                       data-slider-tooltip="hide" />
                   </div>
               </div>
@@ -232,7 +212,8 @@
               <div class="row">
                 <div class="input-slider-ctd">
                 <label class="checkbox-inline padding-left-4px">
-                  <input type="checkbox" checked data-toggle="toggle" data-size="small"> <%= hideLegend %>
+                  <input type="checkbox" checked data-toggle="toggle" data-size="small"> 
+                    <%= hideLegend %>
                 </label>
                 </div>
               </div>
@@ -353,6 +334,31 @@
           </div>
         </div>
     </div>
+
+    <!-- modal for QA -->
+    <div class="modal fade" id="qasection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="qaTitle"></h4>
+          </div>
+          <div class="modal-body">  
+              <div id="qaIndex" class="display-none"></div>
+              <div class="container-fluid">
+                  <div class="row col-md-12 col-lg-12 section-row" id="qaBody">
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="javascript: qaBack();">&nbsp;<i class="fa fa-step-backward" aria-hidden="true"></i>&nbsp;</button>
+              <button type="button" class="btn btn-primary" onclick="javascript: qaForward();">&nbsp;<i class="fa fa-step-forward" aria-hidden="true"></i>&nbsp;</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><%= reportclose %></button>
+          </div>
+        </div>
+      </div>
+  </div>
       
     <!-- Modal for reporting -->
     <div class="modal fade" id="reportsection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -375,6 +381,12 @@
                               </span>
                           </div>
                         </div>
+                    </div>
+                    <div class="row col-md-12 col-lg-12 section-row">
+                      <div class="col-md-6"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <%= reportType %></div>
+                      <div class="col-md-6">
+                          <input type="text" class="form-control input-sm" id="icpdataaddress" placeholder="<%= reportTypeDesc %>"/>
+                      </div>
                     </div>
                     <div class="row col-md-12 col-lg-12 section-row">
                         <div class="col-md-6"><i class="fa fa-map-marker"></i> <%= reportLocation %></div>
@@ -558,23 +570,40 @@
 
     <div id="popover-content-warningInfo" class="hide">
       <div class="warning-body overflow-x-hidden overflow-y-scroll">
-
         <div class="enlarge-row" id="warning-body-content">
-          <!--
-          <button type="button" class="btn btn-default btn-sm full-btn" >
+          <div id="warning-snake"></div>
+          <div id="warning-rabies"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="popover-content-selfposbtn" class="hide">
+      <div class="selfposbtn-body overflow-x-hidden overflow-y-scroll">
+
+        <div class="enlarge-row">
+          <button type="button" class="btn btn-default btn-sm full-btn" onclick="__retrieveInputAddress();">
             <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
-              <div class="circle circle-red circle-float"></div>
+              <i class="fa fa-location-arrow" aria-hidden="true"></i>
             </div>
             <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
-              2018/04/28 眼鏡蛇出沒
+              <input type="text" id="searchAddress" class="form-control input-no-border search-input" placeholder="<%= inputpos %>" />
             </div>
           </button>
-          -->
+        </div>
+
+        <div class="enlarge-row">
+          <button type="button" class="btn btn-default btn-sm full-btn" onclick="__showCurrentLocation();">
+            <div class="col-xs-2 col-md-2 no-padding-right no-padding-left">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-10 col-md-10 no-padding-right no-padding-left">
+              <%= selfpos %>
+            </div>
+          </button>
         </div>
 
       </div>
-    </div>
-    
+    </div>    
 
     <!-- javascript -->
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>	
@@ -591,6 +620,8 @@
     <script src="/seed/Common.js"></script>
     <script src="/seed/TimeCounter.js"></script>
     <script src="/src/config.js"></script>  
+    <script src="/src/getEnvAndParams.js"></script>
+    <script src="/src/addSnake.js"></script>
     <script src="/src/addRabies.js"></script>
     <script src="/src/warnandcamera.js"></script>    
     <script src="/src/currentPosition.js"></script>  

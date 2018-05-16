@@ -3,62 +3,10 @@
  * |- mymap : base map object
  */
 var mymap;
-var allParams = {
-	selfLoc: []
-	, selfMode: ""
-	, settings: {
-		positioning: ""
-		, range: 1
-		, message: true
-		, legend: true
-	}
-	, vaccine: {
-		date: "04/27/2018"
-		, dosetype: 1
-		, notifyemail: ""
-	}
-	, report: {
-		date: "04/27/2018"
-		, location: ""
-		, areatype: "mountain"
-		, reportemail: ""
-	}
-};
-var paramEffect = {
-	settings: {
-		positioning: { "T": 10, "F" : 30 }		// unit is second
-		, range: {0:0, 1:500, 2:1000}			// unit is meter
-	}
-	, vaccine: {
-		dosetype: [0, 3, 7, 14, 21, 28]			// unit is day
-	}
-};
-var systemEffect = {
-	hospital: {
-		finding_min: 3
-	}
-	, warning: {
-		notify_min: 10
-	}
-	, setViewLevel: 15
-	, routingTip: {
-		color: 'blue',
-		weight: 8,
-		opacity: '0.6',
-		smoothFactor: 3
-	}
-	, routingTip2: {
-		color: 'blue',
-		weight: 4,
-		opacity: '0.3',
-		smoothFactor: 3
-	}
-};
-
 var positionContainer = {
 	"hospital":[],
-	"snake":[],
-	"rabies":[]
+	"snake":{},
+	"rabies":{}
 };
 
 /*
@@ -171,23 +119,49 @@ function addPointService() {
 	});
 }
 
-function prepare_popup(dictData, exclude_key) {
+function prepare_popup(hosp_type, dictData, exclude_key) {
 	var keys = getDictionaryKeyList(dictData);
 	var listInfo = "";
-	for(var i = 0 ; i < keys.length; i++) {
-		if(exclude_key.indexOf(keys[i]) > -1) { continue; }
-		if(keys[i] == "十碼章") {
-			listInfo += "看診時段: <a href='http://www.nhi.gov.tw/QueryN/Query3_Detail.aspx?HospID=" 
-			+ dictData[keys[i]] + "' target=_blank><span class='text-color-blue'>網頁連結</span></a><br>";
-		} else {
-			listInfo += keys[i] + ": " + dictData[keys[i]] + "<br>";
-		}
+
+	switch(hosp_type) {
+		default:
+		case 1:
+			for(var i = 0 ; i < keys.length; i++) {
+				if(exclude_key.indexOf(keys[i]) > -1) { continue; }
+				if(keys[i] == "十碼章") {
+					listInfo += "看診時段: <a href='http://www.nhi.gov.tw/QueryN/Query3_Detail.aspx?HospID=" 
+					+ dictData[keys[i]] + "' target=_blank><span class='text-color-blue'>網頁連結</span></a><br>";
+				} else {
+					listInfo += keys[i] + ": " + dictData[keys[i]] + "<br>";
+				}
+			}
+			return listInfo;
+		case 2:
+			for(var i = 0 ; i < keys.length; i++) {
+				if(exclude_key.indexOf(keys[i]) > -1) { continue; }
+				if(keys[i] == "醫事機構代碼") {
+					listInfo += "看診時段: <a href='http://www.nhi.gov.tw/QueryN/Query3_Detail.aspx?HospID=" 
+					+ dictData[keys[i]] + "' target=_blank><span class='text-color-blue'>網頁連結</span></a><br>";
+				} else {
+					listInfo += keys[i] + ": " + dictData[keys[i]] + "<br>";
+				}
+			}
+			return listInfo;
 	}
-	return listInfo;
 }
 
+function checkHospExisting(hosp_code) {
+	for(var i = 0 ; i < positionContainer["hospital"].length ; i++) {
+		if(String(positionContainer["hospital"][i]["options"]["code"]) == String(hosp_code)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 function add_hosp_mark(hosp_type, hosp_info) {
-	var __hospIcon = null;
+	var __hospIcon = null, hosp_code = null;
 
 	if(hosp_type == 1) {
 		__hospIcon = L.AwesomeMarkers.icon({
@@ -195,18 +169,28 @@ function add_hosp_mark(hosp_type, hosp_info) {
 			prefix: 'fa',
 			markerColor: 'green'
 		});
+		hosp_code = hosp_info["十碼章"];
 	} else if (hosp_type == 2) {
 		__hospIcon = L.AwesomeMarkers.icon({
-			icon: 'plus',
+			icon: 'plus-square',
 			prefix: 'fa',
 			markerColor: 'green'
 		});
+		hosp_code = hosp_info["醫事機構代碼"];
 	}
 
+	if(checkHospExisting(hosp_code)) { return ; }
+
 	var hospLoc = [hosp_info["緯度"], hosp_info["經度"]];
-	var hospObj = new L.marker(hospLoc, {icon: __hospIcon});
-	hospObj.bindPopup(prepare_popup(hosp_info, ["經度","緯度","區域別"]));
-	positionContainer["hospital"].push(hospObj.addTo(mymap));
+	customMarker = L.Marker.extend({
+		options: { code: "hosp_code" }
+	});
+	var myMarker = new customMarker(hospLoc, { 
+		icon: __hospIcon
+		, code: hosp_code
+	});
+	myMarker.bindPopup(prepare_popup(hosp_type, hosp_info, ["經度","緯度","區域別"]));
+	positionContainer["hospital"].push(myMarker.addTo(mymap));
 }
 
 /*
@@ -264,6 +248,30 @@ function switchUser() {
 function calAndShowVaccPeroid(getdose) {
 	// update the dose type
 	allParams["vaccine"]["dosetype"] = getdose;
+	var getDate = $('#vaccdate').find("input").val();
+	var getVaccDay = paramEffect["vaccine"]["dosetype"];
+	var initDose = parseInt(getdose);
+	var addDate = null;
+
+	addDate = addDays(new Date(getDate), 0);
+	$('#vaccine-' + getdose).datetimepicker({
+		format: 'MM/DD/YYYY',
+		date: addDate
+	});
+	for(var i = 1 ; i < initDose + 1 ; i++) {
+		$('#vaccine-' + i).datetimepicker({
+			format: 'MM/DD/YYYY',
+			date: addDate
+		});
+	}
+	for(var i = initDose + 1; i <= getVaccDay.length ; i++) {
+		addDate = addDays(new Date(addDate), parseInt(getVaccDay[i-1]));
+		//console.log(parseInt(getVaccDay[i-1]));
+		$('#vaccine-' + i).datetimepicker({
+			format: 'MM/DD/YYYY',
+			date: addDate
+		});
+	}
 }
 
 /**
@@ -289,6 +297,30 @@ function init_calendar() {
 function addBtnListener() {
 	$('input#searchingtext[type="text"]').on('blur' , function() {
 		showDetailList();
+	});
+
+	$('#enableLegend').find('input').on('change', function() { 
+		// fetch latest setting
+		getAllParams();
+
+		if(allParams["settings"]["legend"]) {
+			$('.legend').css({ 'display': 'block' });
+		} else {
+			$('.legend').css({ 'display': 'none' });
+		}
+	});
+
+	$('#rangeslider').on('change', function() { 
+		getAllParams();
+
+		if(getDictionaryLength(allParams["selfLoc"]) < 1) {
+			checkSelfLoc();
+			return ;
+		}
+		// change radius
+		drawRange(allParams["selfLoc"]);
+		// get warning message
+		__set_crt_latlng(allParams["selfLoc"], __selfIcon);
 	});
 }
 
@@ -320,8 +352,14 @@ function legendScaled() {
 
 function setCrtLocOnMap() {
 	if(getDictionaryLength(getAllParams.getSelfLoc()) > 0) {
-		mymap.setView(getAllParams.getSelfLoc(), systemEffect.setViewLevel);
+		//setMapView(getAllParams.getSelfLoc(), systemEffect.setViewLevel);
+		setMapView(getAllParams.getSelfLoc());
 	}
+}
+
+function setMapView(latlng) {
+	//mymap.setView(latlng, viewlevel);
+	mymap.setView(latlng, mymap.getZoom());
 }
 
 function routeSnakeHosp() {
@@ -329,6 +367,7 @@ function routeSnakeHosp() {
 	getAllParams();
 
 	if(getDictionaryKeyList(allParams["selfLoc"]).length < 1) {
+		checkSelfLoc();
 		console.log("you have to position yourself first");
 		return ;
 	}
@@ -362,12 +401,138 @@ function routeSnakeHosp() {
 	});
 }
 
+function routeRabiesVaccHosp() {
+	// fetch latest setting
+	getAllParams();
+
+	// check current position
+	if(getDictionaryKeyList(allParams["selfLoc"]).length < 1) {
+		checkSelfLoc();
+		console.log("you have to position yourself first");
+		return ;
+	}
+
+	$.ajax({
+		url: '/api/nearesthospital?loc=' + allParams["selfLoc"]["lng"] + ';' + allParams["selfLoc"]["lat"] + '&hosp=2',
+		type: 'get',
+		data: {},
+		error: function (xhr, ajaxOptions, thrownError) {
+			console.log(xhr.status + " " + thrownError + ". Cannot connect to /api/nearesthospital.");
+			$('#hospInfo').html('<i class="fa fa-exclamation-triangle small-ubtn" aria-hidden="true"></i>');
+		},
+		success: function (response) {
+			if(response["status"] == "success") {
+				for(var i = 0 ; i < response["result"].length ; i++) {
+					// add to the hosp list and add to the map
+					add_hosp_mark(2, response["result"][i]);
+					// routing the map
+					addRoutingPath(
+						response["result"][i]["醫事機構代碼"]
+						,(i+11)
+						,[allParams["selfLoc"]["lng"], allParams["selfLoc"]["lat"]]
+						,[response["result"][i]["經度"], response["result"][i]["緯度"]]
+					)
+				}
+			} else {
+				console.log("API hosp=2 response but it is failure status");
+				$('#hospInfo').html('<i class="fa fa-exclamation-triangle small-ubtn" aria-hidden="true"></i>');
+			}
+		}
+	});
+}
+
+function add_notification(warningType) {
+	function __ret_msg(csstype, message, latlng) {
+		return('<div class="enlarge-row">'
+		+ '<button type="button" class="btn btn-default btn-sm full-btn" onclick="javascript: setMapView([' + latlng + '])">'
+		+ '<div class="col-xs-2 col-md-2 no-padding-right no-padding-left">'
+		+ '<div class="circle ' + csstype + ' circle-float"></div>'
+		+ '</div>'
+		+ '<div class="col-xs-10 col-md-10 no-padding-right no-padding-left">'
+		+ message
+		+ '</div>'
+		+ '</button></div>');
+	}
+
+	if(warningType == "rabies") {
+		var content = "";
+		var allData = positionContainer["rabies"];
+		var allKeys = getDictionaryKeyList(allData);
+		if(allKeys.length > 0) {
+			for(var i = 0 ; i < allKeys.length ; i++) {
+				var daydiff = dayDiff(allData[allKeys[i]]["datePick"], getCrtDefaultDate());
+				if(daydiff < 366) {
+					content += __ret_msg(
+						'circle-orange', 
+						"檢出" + allData[allKeys[i]]["Animal"] + " (" + allData[allKeys[i]]["datePick"] + ")",
+						[allData[allKeys[i]]["lat"], allData[allKeys[i]]["long"]]
+					);
+				} else {
+					content += __ret_msg(
+						'circle-light-orange', 
+						"檢出" + allData[allKeys[i]]["Animal"] + " (" + allData[allKeys[i]]["datePick"] + ")",
+						[allData[allKeys[i]]["lat"], allData[allKeys[i]]["long"]]
+					);
+				}
+			}
+
+			// show warning tip
+			notifyWarning();
+		} else {
+			content += __ret_msg('circle-blank', "附近無檢出陽性狂犬病動物", 
+			[allParams["selfLoc"]["lat"], allParams["selfLoc"]["lng"]]);
+		}
+		$('#warning-rabies').html(content);
+	} else {
+		var content = "";
+		var allData = positionContainer["snake"];
+		var allKeys = getDictionaryKeyList(allData);
+		if(allKeys.length > 0) {
+			for(var i = 0 ; i < allKeys.length ; i++) {
+				var daydiff = dayDiff(allData[allKeys[i]]["date"], getCrtDefaultDate());
+				if(daydiff < 366) {
+					content += __ret_msg(
+						'circle-red', 
+						"發現" + allData[allKeys[i]]["speciesChi"] + " (" + allData[allKeys[i]]["date"] + ")",
+						[allData[allKeys[i]]["lat"], allData[allKeys[i]]["long"]]
+					);
+				} else {
+					content += __ret_msg(
+						'circle-light-red', 
+						"發現" + allData[allKeys[i]]["speciesChi"] + " (" + allData[allKeys[i]]["date"] + ")",
+						[allData[allKeys[i]]["lat"], allData[allKeys[i]]["long"]]
+					);
+				}
+			}
+
+			// show warning tip
+			notifyWarning();
+		} else {
+			content += __ret_msg('circle-blank', "附近無發現有毒毒蛇", 
+			[allParams["selfLoc"]["lat"], allParams["selfLoc"]["lng"]]);
+		}
+		$('#warning-snake').html(content);
+	}
+}
+
 function notifySelfPosition() {
 	d3.select("#selfposbtn").style("color", "black")
-		.transition().delay(750).style("color", "red")
-		.transition().delay(750).style("color", "black")
-		.transition().delay(750).style("color", "red")
-		.transition().delay(750).style("color", "black");
+		.transition().delay(1000).style("color", "red")
+		.transition().delay(500).style("color", "black")
+		.transition().delay(1000).style("color", "red")
+		.transition().delay(500).style("color", "black")
+		.transition().delay(1000).style("color", "red")
+		.transition().delay(500).style("color", "black");
+}
+
+function notifyWarning() {
+	d3.select("#warningInfo").style("color", "black")
+		.transition().delay(1000).style("color", "orange")
+		.transition().delay(500).style("color", "black")
+		.transition().delay(1000).style("color", "orange")
+		.transition().delay(500).style("color", "black")
+		.transition().delay(1000).style("color", "orange")
+		.transition().delay(500).style("color", "black");
 }
 
 function checkSelfLoc() {
@@ -380,101 +545,13 @@ function checkSelfLoc() {
 }
 
 /**
- * desc: prepare the environment parameters
+ * desc: preload the searching text
  */
-function getAllParams() {
-	function getSelfLoc() {
-		if(selfLoc.length > 0) { return selfLoc[0]["_latlng"]; }
-		else { return({}); }
-	}
-	getAllParams.getSelfLoc = getSelfLoc;
-
-	function getSelfMode() { 
-		if($('.user').find('i').hasClass('fa-user-circle')) { return "user"; } 
-		else { return "medical"; } 
-	}
-	getAllParams.getSelfMode = getSelfMode;
-
-	function getPositioning() {
-		if($('#positioning').find('input').prop('checked')) { return true; }
-		else { return false; }
-	}
-	getAllParams.getPositioning = getPositioning;
-
-	function searchRange() {
-		return(parseInt($('#rangeslider').val()));
-	}
-	getAllParams.searchRange = searchRange;
-
-	function messagePush() {
-		if($('#messaging').find('input').prop('checked')) { return true; }
-		else { return false; }
-	}
-	getAllParams.messagePush = messagePush;
-
-	function legendPush() {
-		if($('#enableLegend').find('input').prop('checked')) { return true; }
-		else { return false; }
-	}
-	getAllParams.legendPush = legendPush;
-
-	function getVaccDate() {
-		return $('#vaccdate').find('input').val();
-	}
-	getAllParams.getVaccDate = getVaccDate;
-
-	function getDoseType() {
-		// notice this action is active button
-		if(allParams["vaccine"]["dosetype"] < 1) { return -1; } 
-		else { return allParams["vaccine"]["dosetype"]; }
-	}
-	getAllParams.getDoseType = getDoseType;
-
-	function getNotifyEmail() {
-		if($('#vaccnotify_email').val().length < 1) { return ""; } 
-		else { return($('#vaccnotify_email').val()); }
-	}
-	getAllParams.getNotifyEmail = getNotifyEmail;
-
-	function getReportDate() {
-		return $('#reportDate').find('input').val();
-	}
-	getAllParams.getReportDate = getReportDate;
-
-	function getReportArea() {
-		return parseInt($('#area').val());
-	}
-	getAllParams.getReportArea = getReportArea;
-	
-	function getReportEmail() {
-		if($('#reportman_email').val().length < 1) { return ""; } 
-		else { return($('#reportman_email').val()); }
-	}
-	getAllParams.getReportEmail = getReportEmail;
-	
-	allParams = {
-		selfLoc: getSelfLoc()
-		, selfMode: getSelfMode(0)
-		, settings: {
-			positioning: getPositioning()
-			, range: searchRange()
-			, message: messagePush()
-			, legend: legendPush()
-		}
-		, vaccine: {
-			date: getVaccDate()
-			, dosetype: -1
-			, notifyemail: getNotifyEmail()
-		}
-		, report: {
-			date: getReportDate()
-			, location: ""
-			, areatype: getReportArea()
-			, reportemail: getReportEmail()
-		}
-	}
+function preloadSearch(data) {
+	$("#searchingtext").val(data);
+	pinDetailList();
+	fetchQA();
 }
-
 
 /* 
  * desc : main entry 

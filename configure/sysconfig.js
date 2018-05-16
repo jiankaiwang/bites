@@ -1,7 +1,7 @@
 /*
  * secret information
  */
-var sysconf = {
+exports.sysconf = {
     "umap_version" : "0.0.1"
     , "availableLang" : "en zh_TW"
     , "defaultLang" : "zh_TW"
@@ -17,14 +17,25 @@ var sysconf = {
     }
 };
 
-var recaptcah = {
+exports.recaptcah = {
     sitekey: "",
     secretkey: ""
 }
 
+exports.googleapikey = {
+    "geocoding": ""
+}
 
-/*
- * export list
- */
-exports.sysconf = sysconf;
-exports.recaptcah = recaptcah;
+exports.env = {
+    "mode": "dev"
+    , "url": {
+        "dev": "http://localhost:8080",
+        "ops": "https://xxx.example.com"
+    }
+}
+
+exports.params = {
+    "rabies_history_peroid_year": 3
+    , "snake_history_peroid_year": 3
+    , "grid_meter": 250
+}

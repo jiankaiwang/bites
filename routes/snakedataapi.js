@@ -1,6 +1,6 @@
 /**
- * http://localhost:8081/api/rabiesdataapi?loc=lat;lng&type={rabiesinyear,rabieshistory,rabiesall}
- * http://localhost:8081/api/rabiesdataapi?loc=22.2;121.4&type=rabiesall&range=1
+ * http://localhost:8081/api/snakedataapi?loc=lat;lng&type={snakeinyear,snakehistory,snakeall}
+ * http://localhost:8081/api/snakedataapi?loc=22.2;121.4&type=snakeall&range=1
  */
 
 
@@ -16,7 +16,7 @@ var url = require("url")
   , nxtgrid = require('../controllers/networkGrid')
   , sysconfig = require('../configure/sysconfig');
 
-var apitype = ["rabiesinyear","rabieshistory","rabiesall"];
+var apitype = ["snakeinyear","snakehistory","snakeall"];
 
 /** 
  * The api basic information what you have to edit.
@@ -29,9 +29,9 @@ function retMsg(status, message) {
   });
 }
 
-var rabies_data = []
-    , rabies_grid_key = []
-    , rabies_grid_data = {};
+var snake_data = []
+    , snake_grid_key = []
+    , snake_grid_data = {};
 
 /**
  * desc: preload the data
@@ -51,33 +51,33 @@ function __parse_data_type(jsonData) {
 
 function __add_key_data(lat, long, data) {
   var latlon_key = lat + "-" + long;
-  if(rabies_grid_key.indexOf(latlon_key) < 0) {
-    rabies_grid_key.push(latlon_key);
-    rabies_grid_data[latlon_key] = [];
+  if(snake_grid_key.indexOf(latlon_key) < 0) {
+    snake_grid_key.push(latlon_key);
+    snake_grid_data[latlon_key] = [];
   }
-  rabies_grid_data[latlon_key].push(data);
+  snake_grid_data[latlon_key].push(data);
 }
 
 function __parse_data_grid() {
-  for(var i = 0 ; i < rabies_data.length ; i++) {
-    var latlngGrid = [nxtgrid.getGridIndex(rabies_data[i]["lat"]), nxtgrid.getGridIndex(rabies_data[i]["long"])];
-    __add_key_data(latlngGrid[0], latlngGrid[1], rabies_data[i]);
+  for(var i = 0 ; i < snake_data.length ; i++) {
+    var latlngGrid = [nxtgrid.getGridIndex(snake_data[i]["lat"]), nxtgrid.getGridIndex(snake_data[i]["long"])];
+    __add_key_data(latlngGrid[0], latlngGrid[1], snake_data[i]);
   }
 }
 
-function __load_rabies_data() {
+function __load_snake_data() {
   var runUrl = sysconfig["env"]["url"][sysconfig["env"]["mode"]];
-  http.get(runUrl + '/data/rabies_clean.json', function(res){
+  http.get(runUrl + '/data/roadkillsnake.json', function(res){
     var body = '';
     res.on('data', function(chunk){
       body += chunk;
     });
     res.on('end', function(){
-      rabies_data = __parse_data_type(JSON.parse(body));
+      snake_data = __parse_data_type(JSON.parse(body));
       __parse_data_grid();
     });
   }).on('error', function(e){
-      console.log("Can not fetch rabies data.", e);
+      console.log("Can not fetch snake data.", e);
   });
 }
 
@@ -102,7 +102,7 @@ function check_api_availability(queryData) {
   return 1;
 }
 
-function retRabiesAllData(queryData, res) {
+function retSnakeAllData(queryData, res) {
   // get grid data
   var loc = queryData["loc"].split(";");
   var keys = common.getDictionaryKeyList(queryData);
@@ -116,8 +116,8 @@ function retRabiesAllData(queryData, res) {
   // fetch rabies data
   var retData = [];
   for(var i = 0 ; i < gridData.length ; i++) {
-    if(rabies_grid_key.indexOf(gridData[i]) > -1) {
-      retData = retData.concat(rabies_grid_data[gridData[i]]);
+    if(snake_grid_key.indexOf(gridData[i]) > -1) {
+      retData = retData.concat(snake_grid_data[gridData[i]]);
     }
   }
   res.end(JSON.stringify(retMsg("success",{"length":retData.length, "data":retData})));
@@ -126,10 +126,10 @@ function retRabiesAllData(queryData, res) {
 /******************************************************************************
  * initialization
  *****************************************************************************/
-function __preload_data() {
-  __load_rabies_data();
+function __preload_snake_data() {
+  __load_snake_data();
 }
-__preload_data();
+__preload_snake_data();
 
 /******************************************************************************
  * API Section
@@ -151,12 +151,12 @@ function getStatus(allQueries, res) {
   var loc = allQueries["loc"].split(";");
   switch(allQueries['type']) {
     default:
-    case "rabiesinyear":
-    case "rabieshistory":
-    case "rabiesall":
+    case "snakeinyear":
+    case "snakehistory":
+    case "snakeall":
       // necessary
       //console.log(nxtgrid.getGridList(loc[0], loc[1], 1000));
-      retRabiesAllData(allQueries, res);
+      retSnakeAllData(allQueries, res);
       break;
   }
   return res.end(JSON.stringify(retMsg("failure","please refer to api instruction")));

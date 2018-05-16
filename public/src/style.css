@@ -129,6 +129,10 @@ A.tmpRemove {
 	margin-right: 0px;
 }
 
+.margin-bottom-10px {
+	margin-bottom: 10px;
+}
+
 .fa-half1p8x {
 	padding-top: 3px;
 	font-size: 1.8rem;
@@ -232,6 +236,12 @@ input[type="text"]:focus {
 }
 
 .warning-body {
+	width: 200px;
+	height: auto;
+	max-height: 300px;
+}
+
+.selfposbtn-body {
 	width: 200px;
 	height: auto;
 	max-height: 300px;
@@ -350,12 +360,12 @@ input[type="text"]:focus {
 }
 
 .circle-orange {
-	background: rgba(255,127,39,0.8);
+	background: rgba(128,64,64,0.8);
     border: 1px solid rgba(0,0,0,1);
 }
 
 .circle-light-orange {
-	background: rgba(255,127,39,0.2);
+	background: rgba(128,64,64,0.2);
     border: 1px solid rgba(0,0,0,1);
 }
 
@@ -475,14 +485,26 @@ input[type="text"]:focus {
 }
 
 /* question */
+#showqa-body {
+	clear: both;
+}
+
 .question {
 	padding-top: 5px;
 	padding-bottom: 10px;
 	clear: both;
 }
 
-.question:hover { 
+.question-btn {
+	padding: 5px;
+    border: 1px solid rgba(200,200,200,0.8);
+    border-radius: 5px;
+}
 
+/* position */
+.search-input {
+	height: 20px;
+	font-size: 12px;
 }
 
 /*

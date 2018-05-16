@@ -14,7 +14,8 @@ var url = require("url")
   , wo = require("../controllers/weboperating")
   , http = require('http')
   , https = require('https')
-  , common = require('./Common');
+  , common = require('../controllers/Common')
+  , sysconfig = require('../configure/sysconfig');
 
 /** 
  * The api basic information what you have to edit.
@@ -54,7 +55,8 @@ function __parse_data_type(jsonData) {
   return jsonData;
 }
 function __load_snake_serum_hosp() {
-  http.get('http://localhost:8081/data/snake_serum.json', function(res){
+  var runUrl = sysconfig["env"]["url"][sysconfig["env"]["mode"]];
+  http.get(runUrl + '/data/snake_serum.json', function(res){
     var body = '';
     res.on('data', function(chunk){
       body += chunk;
@@ -67,7 +69,8 @@ function __load_snake_serum_hosp() {
   });
 }
 function __load_rabies_hosp() {
-  http.get('http://localhost:8081/data/anti_rabies.json', function(res){
+  var runUrl = sysconfig["env"]["url"][sysconfig["env"]["mode"]];
+  http.get(runUrl + '/data/anti_rabies.json', function(res){
     var body = '';
     res.on('data', function(chunk){
       body += chunk;
@@ -80,7 +83,8 @@ function __load_rabies_hosp() {
   });
 }
 function __load_rabies_hirg_hosp() {
-  http.get('http://localhost:8081/data/anti_rabies_hirg.json', function(res){
+  var runUrl = sysconfig["env"]["url"][sysconfig["env"]["mode"]];
+  http.get(runUrl + '/data/anti_rabies_hirg.json', function(res){
     var body = '';
     res.on('data', function(chunk){
       body += chunk;
@@ -145,7 +149,40 @@ function find_snakeserum_hosp(loc) {
     }
   }
   if(nearest_hosp_distance[0] > nearest_hosp_distance[1]) {
-    nearest_hosp_distance = common.swap([nearest_hosp_distance[0], nearest_hosp_distance[1]]);
+    nearest_hosp_distance = common.swap(nearest_hosp_distance[0], nearest_hosp_distance[1]);
+    nearest_hosp = common.swap(nearest_hosp[0], nearest_hosp[1]);
+  }
+  return {"distance":nearest_hosp_distance, "hospital":nearest_hosp};
+}
+
+/**
+ * loc = [lng, lat]
+ */
+function find_rabiesVaccine_hosp(loc) {
+  var nearest_hosp_distance = [1e7, 1e8];
+  var nearest_hosp = [null, null];
+  loc[0] = parseFloat(loc[0]);
+  loc[1] = parseFloat(loc[1]);
+  for(var i = 0 ; i < anti_rabies_data.length ; i++) {
+    var dist = getDistance([loc[1], loc[0]], [anti_rabies_data[i]["緯度"], anti_rabies_data[i]["經度"]]);
+    if(dist < nearest_hosp_distance[0] && dist > nearest_hosp_distance[1]) {
+      nearest_hosp_distance[0] = dist;
+      nearest_hosp[0] = anti_rabies_data[i];
+    } else if (dist > nearest_hosp_distance[0] && dist < nearest_hosp_distance[1]) {
+      nearest_hosp_distance[1] = dist;
+      nearest_hosp[1] = anti_rabies_data[i];
+    } else if (dist < nearest_hosp_distance[0] && dist < nearest_hosp_distance[1]) {
+      if(nearest_hosp_distance[0] > nearest_hosp_distance[1]) {
+        nearest_hosp_distance[0] = dist;
+        nearest_hosp[0] = anti_rabies_data[i];
+      } else {
+        nearest_hosp_distance[1] = dist;
+        nearest_hosp[1] = anti_rabies_data[i];
+      }
+    }
+  }
+  if(nearest_hosp_distance[0] > nearest_hosp_distance[1]) {
+    nearest_hosp_distance = common.swap(nearest_hosp_distance[0], nearest_hosp_distance[1]);
     nearest_hosp = common.swap(nearest_hosp[0], nearest_hosp[1]);
   }
   return {"distance":nearest_hosp_distance, "hospital":nearest_hosp};
@@ -205,7 +242,8 @@ function getStatus(allQueries, res) {
       var result = retHosp("success", find_snakeserum_hosp(loc)["hospital"], 2);
       return res.end(JSON.stringify(result));
     case 2:
-      break;
+      var result = retHosp("success", find_rabiesVaccine_hosp(loc)["hospital"], 2);
+      return res.end(JSON.stringify(result));
   }
   return res.end(JSON.stringify(retMsg("failure","please refer to api instruction")));
 }

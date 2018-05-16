@@ -10,7 +10,7 @@ var http = require('http');
 var url = require("url");
 var querystring = require('querystring');
 var request = require('request');
-var common = require('./Common');
+var common = require('../controllers/Common');
 var api_response = {"status":"", "version":"0.1", "description": ""};
 
 /*

@@ -29,6 +29,7 @@ function getSessionHash() {
 	
 	return(rawHashCode);
 }
+exports.getSessionHash = getSessionHash;
 
 /*
  * allow host access
@@ -41,9 +42,8 @@ function checkAllowedHost(req) {
 	} 
 	return false;
 }
+exports.checkAllowedHost = checkAllowedHost;
 
 /*
  * output list
  */
-exports.getSessionHash = getSessionHash;
-exports.checkAllowedHost = checkAllowedHost;

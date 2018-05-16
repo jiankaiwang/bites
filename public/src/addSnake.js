@@ -10,27 +10,27 @@ function prepare_rabies_popup(dictData, exclude_key) {
 	return listInfo;
 }
 
-function __add_rabies_location(data) {
+function __add_snake_location(data) {
 	var oneyearMarkerOptions = {
 		radius: 6,
-		fillColor: "rgba(128,64,64,0.8)",
+		fillColor: "rgba(255,0,0,0.8)",
 		color: "#000",
 		weight: 1,
 		opacity: 1,
 		fillOpacity: 0.8
 	}, moreyearMarkerOptions = {
 		radius: 6,
-		fillColor: "rgba(128,64,64,0.2)",
+		fillColor: "rgba(255,0,0,0.2)",
 		color: "#000",
 		weight: 1,
 		opacity: 1,
 		fillOpacity: 0.8
 	};
 
-	var crtShowLoc = getDictionaryKeyList(positionContainer["rabies"]);
-	if(crtShowLoc.indexOf(data['uniqueid']) < 0) {
-		var latlng, rabiesObj, marktype;
-		var daydiff = dayDiff(data["datePick"],getCrtDefaultDate());
+	var crtShowLoc = getDictionaryKeyList(positionContainer["snake"]);
+	if(crtShowLoc.indexOf(data['identifier']) < 0) {
+		var latlng, snakeObj, marktype;
+		var daydiff = dayDiff(data["date"],getCrtDefaultDate());
 
 		if(daydiff > 366) {
 			marktype = moreyearMarkerOptions;
@@ -39,25 +39,26 @@ function __add_rabies_location(data) {
 		}
 
 		latlng = [data["lat"], data["long"]];
-		rabiesObj = new L.circleMarker(latlng, marktype);
-		rabiesObj.bindPopup(prepare_rabies_popup(data, ["uniqueid","lat","long","yearStat"]));
-		positionContainer["rabies"][data['uniqueid']] = data;
-		rabiesObj.addTo(mymap);
+		snakeObj = new L.circleMarker(latlng, marktype);
+		snakeObj.bindPopup(prepare_rabies_popup(
+			data, ["conserve","lat","long","species","identifier","familyChi","family","class"]));
+		positionContainer["snake"][data['identifier']] = data;
+		snakeObj.addTo(mymap);
 	}
 }
 
 /**
  * desc: add rabies data in one year
  */
-function addRabiesData() {
+function addSnakeData() {
 	var states = [];
 
 	getAllParams();
 
 	$.ajax({
-		url: '/api/rabiesdataapi?loc=' 
+		url: '/api/snakedataapi?loc=' 
 			+ String(allParams["selfLoc"]["lat"]) + ';' 
-			+ String(allParams["selfLoc"]["lng"]) +'&type=rabiesall&range='
+			+ String(allParams["selfLoc"]["lng"]) +'&type=snakeall&range='
 			+ String(parseInt(allParams["settings"]["range"])-1),
 		type: 'get',
 		data: {},
@@ -70,14 +71,14 @@ function addRabiesData() {
 				var allRes = response["result"]["data"];
 				for(var i = 0 ; i < parseInt(response["result"]["length"]) ; i++) {
 					if(allRes[i]["lat"] > 0 && allRes[i]["long"] > 0) {
-						__add_rabies_location(allRes[i]);
+						__add_snake_location(allRes[i]);
 					}
 				}
 				
 				// add notification, check if there is risk zones
-				add_notification("rabies");
+				add_notification("snake");
 			} else {
-				console.log("Error: Can not fetch rabies data.");
+				console.log("Error: Can not fetch snake data.");
 			}
 		}
 	});

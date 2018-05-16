@@ -2,68 +2,105 @@
 function __addDays(getDays) {
     return getDays * __addHours(24);
 }
+
 function __addHours(getHours) {
     return getHours * __addMinutes(60);
 }
+
 function __addMinutes(getMinutes) {
     return getMinutes * __addSeconds(60);
 }
+
 function __addSeconds(getSeconds) {
     return getSeconds * 1000;
 }
+
 function __formatMDHMS(getValue) {
     return (getValue < 10 ? '0' + getValue : getValue);
 }
+
 /* public */
 function currentDateAddDays(addDays) {
     return new Date((new Date()).getTime() + __addDays(addDays));
 }
+exports.currentDateAddDays = currentDateAddDays;
+
 function currentDateAddHours(addHours) {
     return new Date((new Date()).getTime() + __addHours(addHours));
 }
+exports.currentDateAddHours = currentDateAddHours;
+
 function currentDateAddMinutes(addMinutes) {
     return new Date((new Date()).getTime() + __addMinutes(addMinutes));
 }
+exports.currentDateAddMinutes = currentDateAddMinutes;
+
 function currentDateAddSeconds(addSeconds) {
     return new Date((new Date()).getTime() + __addSeconds(addSeconds));
 }
+exports.currentDateAddSeconds = currentDateAddSeconds;
+
 function addDays(getDate, getDays) {
     return new Date(getDate.getTime() + __addDays(getDays));
 }
+exports.addDays = addDays;
+
 function addHours(getDate, getHours) {
     return new Date(getDate.getTime() + __addHours(getHours));
 }
+exports.addHours = addHours;
+
 function addMinutes(getDate, getMinutes) {
     return new Date(getDate.getTime() + __addMinutes(getMinutes));
 }
+exports.addMinutes = addMinutes;
+
 function addSeconds(getDate, getSeconds) {
     return new Date(getDate.getTime() + __addSeconds(getSeconds));
 }
+exports.addSeconds = addSeconds;
+
 function getCrtYear(getDate) {
     return getDate.getFullYear();
 }
+exports.getCrtYear = getCrtYear;
+
 function getCrtMonth(getDate) {
     return __formatMDHMS(getDate.getMonth() + 1);
 }
+exports.getCrtMonth = getCrtMonth;
+
 function getCrtDate(getDate) {
     return __formatMDHMS(getDate.getDate());
 }
+exports.getCrtDate = getCrtDate;
+
 function getCrtHour(getDate) {
     return __formatMDHMS(getDate.getHours());
 }
+exports.getCrtHour = getCrtHour;
+
 function getCrtMinute(getDate) {
     return __formatMDHMS(getDate.getMinutes());
 }
+exports.getCrtMinute = getCrtMinute;
+
 function getCrtSecond(getDate) {
     return __formatMDHMS(getDate.getSeconds());
 }
+exports.getCrtSecond = getCrtSecond;
+
 function getCrtDay(getDate) {
     return __formatMDHMS(getDate.getDay());
 }
+exports.getCrtDay = getCrtDay;
+
 function getCrtAlphaDay(getDate) {
     var list = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return list[getDate.getDay()];
 }
+exports.getCrtAlphaDay = getCrtAlphaDay;
+
 /**
  *
  * @param getDate : new Date()
@@ -77,6 +114,8 @@ function setYearMonthDate(getDate, getYMD) {
     tmpDate.setDate(parseInt(ymdList[2]));
     return tmpDate;
 }
+exports.setYearMonthDate = setYearMonthDate;
+
 /**
  *
  * @param getDate : e.g new Date()
@@ -90,6 +129,7 @@ function setHourMinuteSecond(getDate, getHMS) {
     tmpDate.setSeconds(parseInt(hmsList[2]));
     return tmpDate;
 }
+exports.setHourMinuteSecond = setHourMinuteSecond;
 
 /*
  * desc : format seconds to DD:HH:MM:SS
@@ -126,26 +166,9 @@ function formatSecond(second, format) {
 			return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
 	}
 }
-
-/**
- * 
- */
-function getCrtDefaultDate() {
-    var datetime = new Date();
-    return getCrtMonth(datetime) + "/" + getCrtDate(datetime) + "/" + getCrtYear(datetime);
-}
+exports.formatSecond = formatSecond;
  
-/**
- * day1: "7/13/2010"
- * day2: "12/15/2010"
- */
-function dayDiff(day1, day2) {
-    var date1 = new Date(day1);
-    var date2 = new Date(day2);
-    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    return diffDays;
-}
+ 
  
  
  

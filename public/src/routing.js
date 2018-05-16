@@ -80,13 +80,29 @@ function __showRoutePath(code, major, data) {
                     opacity: systemEffect["routingTip"]["opacity"],
                     smoothFactor: systemEffect["routingTip"]["smoothFactor"]
                 };
-            default:
+            case 2:
                 return {
                     //className: __getRouteClass(),
                     color: systemEffect["routingTip2"]["color"],
                     weight: systemEffect["routingTip2"]["weight"],
                     opacity: systemEffect["routingTip2"]["opacity"],
                     smoothFactor: systemEffect["routingTip2"]["smoothFactor"]
+                };
+            case 11:
+                return {
+                    //className: __getRouteClass(),
+                    color: systemEffect["routingTip11"]["color"],
+                    weight: systemEffect["routingTip11"]["weight"],
+                    opacity: systemEffect["routingTip11"]["opacity"],
+                    smoothFactor: systemEffect["routingTip11"]["smoothFactor"]
+                };
+            case 12:
+                return {
+                    //className: __getRouteClass(),
+                    color: systemEffect["routingTip12"]["color"],
+                    weight: systemEffect["routingTip12"]["weight"],
+                    opacity: systemEffect["routingTip12"]["opacity"],
+                    smoothFactor: systemEffect["routingTip12"]["smoothFactor"]
                 };
         }
     }

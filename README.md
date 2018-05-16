@@ -40,11 +40,11 @@ Add and edit the configuration file (named `sysconfig.js`) under path `configure
 /*
  * secret information
  */
-var sysconf = {
+exports.sysconf = {
     "umap_version" : "0.0.1"
     , "availableLang" : "en zh_TW"
     , "defaultLang" : "zh_TW"
-    , "site_description" : "Bites project is the open source for GIS with AI image recognition for providing residents with information of snake and rabies-infected animals."
+    , "site_description" : "Bites project is the open source for GIS with AI image recognition for providing residents with information of snake and rabies-infected animals. "
     , "error_emails_to" : "null"
     , "api_allow_host" : "localhost 127.0.0.1"
     , "use-redis": false
@@ -56,17 +56,29 @@ var sysconf = {
     }
 };
 
-var recaptcah = {
-    sitekey: "",
-    secretkey: ""
+exports.recaptcah = {
+    sitekey: "(recaptcah-sitekey)",
+    secretkey: "(recaptcah-secretkey)"
 }
 
+exports.googleapikey = {
+    "geocoding": "(google geocoding api)"
+}
 
-/*
- * export list
- */
-exports.sysconf = sysconf;
-exports.recaptcah = recaptcah;
+// you can change between develop and operation mode
+exports.env = {
+    "mode": "dev"
+    , "url": {
+        "dev": "http://localhost:8080",
+        "ops": "https://xxx.example.com"
+    }
+}
+
+exports.params = {
+    "rabies_history_peroid_year": 3
+    , "snake_history_peroid_year": 3
+    , "grid_meter": 250
+}
 ```
 
 ### Deployment

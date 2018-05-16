@@ -18,12 +18,16 @@ var sc = require('./configure/sysconfig')
   , bodyParser = require('body-parser')
   , app = express()
   , fs = require('fs')
-  , directoryExists = require('directory-exists')
-  , routeapi = require('./routes/routeapi')
-  , nearesthospital = require('./routes/nearesthospital');
+  , directoryExists = require('directory-exists');
 
 var api = require('./routes/api')
-  , api_service = require('./routes/api_service');
+  , api_service = require('./routes/api_service')
+  , rabiesdataapi = require('./routes/rabiesdataapi')
+  , snakedataapi = require('./routes/snakedataapi')
+  , routeapi = require('./routes/routeapi')
+  , nearesthospital = require('./routes/nearesthospital')
+  , geocoding = require('./routes/geocoding')
+  , qaapi = require('./routes/qaapi');
 
 /* 
   * desc : session settings, 
@@ -91,6 +95,10 @@ app.all('/api', api.portal);
 app.all('/api/service', api_service.portal);
 app.get('/api/routeapi', routeapi.list);
 app.get('/api/nearesthospital', nearesthospital.list);
+app.get('/api/rabiesdataapi', rabiesdataapi.list);
+app.get('/api/snakedataapi', snakedataapi.list);
+app.get('/api/geocoding', geocoding.list);
+app.get('/api/qaapi', qaapi.list);
 
 /*
  * desc : open http / https server 
