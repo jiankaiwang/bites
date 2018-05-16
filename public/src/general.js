@@ -516,13 +516,18 @@ function add_notification(warningType) {
 }
 
 function notifySelfPosition() {
-	d3.select("#selfposbtn").style("color", "black")
-		.transition().delay(1000).style("color", "red")
-		.transition().delay(500).style("color", "black")
-		.transition().delay(1000).style("color", "red")
-		.transition().delay(500).style("color", "black")
-		.transition().delay(1000).style("color", "red")
-		.transition().delay(500).style("color", "black");
+	getAllParams();
+	var selfLocCnt = getDictionaryLength(allParams["selfLoc"]);
+	if(selfLocCnt < 1) {
+		d3.select("#selfposbtn").style("color", "black")
+			.transition().delay(1000).style("color", "red")
+			.transition().delay(500).style("color", "black")
+			.transition().delay(1000).style("color", "red")
+			.transition().delay(500).style("color", "black")
+			.transition().delay(1000).style("color", "red")
+			.transition().delay(500).style("color", "black");
+		setTimeout(function() { notifySelfPosition(); }, 5000);
+	}
 }
 
 function notifyWarning() {
@@ -586,4 +591,5 @@ $(function() {
 
 	// initialization
 	getAllParams();
+	notifySelfPosition();
 });
