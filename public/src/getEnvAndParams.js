@@ -63,6 +63,10 @@ var systemEffect = {
 	}
 };
 
+var on_uploading_flag = {
+	"image_classification" : false
+};
+
 
 /**
  * desc: prepare the environment parameters

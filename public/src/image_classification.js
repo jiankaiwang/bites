@@ -28,6 +28,7 @@ function wait_for_ic_complete() {
                 ic_change_result_notify("state: " + response['state']);
                 setTimeout(function(){ 
                     wait_for_ic_complete(); 
+                    setNotiftBtn("processing", "辨識中");
                     console.log("Keep waiting for the calculation complete.");
                 }, 2000);
             } else if (response['state'] == "complete") {
@@ -40,15 +41,64 @@ function wait_for_ic_complete() {
                     showResMsg += keyList[i] + ": " + allres[keyList[i]] + "<br>";
                 }
                 ic_change_result_notify(showResMsg);
+                setNotiftBtn("reupload", "上傳圖片");
             } else if (response['state'] == "failure") {
                 ic_change_result_notify("failure to classify the image");
+                setNotiftBtn("tryupload", "重新圖片");
             }
 		}
 	});
 }
 
+function setNotiftBtn(status, value) {
+  var content = "";
+  var icstatue = false;
+  var btnStatue = 'btn-primary';
+  switch(status) {
+    case "uploading":
+      icstatue = true;
+      content = '<i class="fa fa-cloud-upload" aria-hidden="true"></i> ' + value;
+      if($('.uploadscai').hasClass('btn-primary')) {
+        $('.uploadscai').removeClass('btn-primary');
+        $('.uploadscai').addClass('btn-default');
+      }
+      break;
+    case "processing":
+      icstatue = true;
+      content = "<i class='fa fa-spinner fa-spin'></i> " + value;
+      if($('.uploadscai').hasClass('btn-primary')) {
+        $('.uploadscai').removeClass('btn-primary');
+        $('.uploadscai').addClass('btn-default');
+      }
+      break;    
+    case "reupload":
+      icstatue = false;
+      content = value;
+      if($('.uploadscai').hasClass('btn-default')) {
+        $('.uploadscai').removeClass('btn-default');
+        $('.uploadscai').addClass('btn-primary');
+      }
+      break;     
+    case "tryupload":
+      icstatue = false;
+      content = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + value;
+      if($('.uploadscai').hasClass('btn-default')) {
+        $('.uploadscai').removeClass('btn-default');
+        $('.uploadscai').addClass('btn-primary');
+      }
+      break;            
+  }
+  $('.uploadscai').html(content);
+  on_uploading_flag["image_classification"] = icstatue;
+  
+}
+
 $(function(){
   $('#icupload').on('click', function() {
+    if(on_uploading_flag["image_classification"]) {
+      return;
+    }
+
     $.ajax({
       url: 'https://bites.cdc.gov.tw:5001/imageclassification',
       type: 'POST',
@@ -69,7 +119,10 @@ $(function(){
           // For handling the progress of the upload
           myXhr.upload.addEventListener('progress', function(e) {
           if (e.lengthComputable) {
-            $('progress').attr({value: e.loaded, max: e.total});
+            //$('progress').attr({value: e.loaded, max: e.total});
+            //console.log(e.loaded, e.total);
+            setNotiftBtn("uploading", 
+              '上傳 ' + Math.round(e.loaded / e.total * 100) + ' %');
           }} , false);
           myXhr.upload.addEventListener('loadend', function(e) {
             console.log("Uploading image is complete.");
