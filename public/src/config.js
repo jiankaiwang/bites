@@ -48,7 +48,7 @@ layerTypeName = {
 } 
  
 var attributionInfo = {
-	"osm" : 'Mapdata &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Bites &copy; 2017'
+	"osm" : 'Mapdata &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Bites &copy; 2018'
 };
 
 var outdoorLayer = L.tileLayer(

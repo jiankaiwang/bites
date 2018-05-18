@@ -550,6 +550,10 @@ function checkSelfLoc() {
 	}
 }
 
+function uploadscai() {
+	$('#icupload').click();
+}
+
 /**
  * desc: preload the searching text
  */

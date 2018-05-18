@@ -533,6 +533,42 @@ input[type="text"]:focus {
 	color: rgba(255,0,0,1);
 }
 
+/* AI */
+.oriimg {
+    width: 100%;
+	display: none;
+	max-height: 500px;
+}
+
+.resimg {
+    width: 100%;
+	display: none;
+	max-height: 500px;
+}
+
+#oriimgbody {
+    width: 100%;
+    height: auto;
+}
+
+#resimgbody {
+    width: 100%;
+    height: auto;
+}
+
+.classifyorigin {
+    display: none;
+}
+
+#classifyoriginbody {
+	width: 100%;
+	max-height: 500px;
+}
+
+#icupload {
+	display: none;
+}
+
 /*
  * mobile or tablet
  */
@@ -548,4 +584,12 @@ input[type="text"]:focus {
 	.mark {
 		right: 45%;
 	}
+
+	.oriimg {
+        width: 80%;
+    }
+    
+    .resimg {
+        width: 100%;
+    }
 }

@@ -311,14 +311,52 @@
             <div class="modal-body">  
                 <div class="container-fluid">
                     <div class="row col-md-12 col-lg-12 section-row">
-                        <div class="col-md-12 text-center"><%= uploadimg %></div>
-                        <div class="col-md-12 text-center">
-                          <input name="uploadImg" type="file" accept="image/gif, image/jpeg, image/png">
-                        </div>
+                      <!-- image classification -->
+                      <form method="POST" enctype="multipart/form-data" action="#" id="imageclassification">
+                          <input type="file" name="photo"></input>
+                          <input type="button" id="icupload" value="Upload"></input>
+                      </form>
+
+                      <!-- object detection -->
+                      <!--
+                      <div class="col-xs-3 col-md-3"></div>
+                      <div class="col-xs-6 col-md-6 text-center">
+                          <form method="POST" enctype="multipart/form-data" action="#" id="objectdetection">
+                              <input type="file" name="photo"></input>
+                              <input type="button" id="odupload" value="Upload"></input>
+                          </form>
+                      </div>
+                      <div class="col-xs-3 col-md-3"></div>
+                      -->
                     </div>
                     <div class="row col-md-12 col-lg-12 section-row"><hr /></div>
                     <div class="row col-md-12 col-lg-12 section-row">
                         <div class="col-md-12 text-center"><%= imageRecognitionResult %></div>
+                        <!-- image classification -->
+                        <div class="col-xs-1 col-md-1"></div>
+                        <div class="col-xs-5 col-md-5 text-center classifyorigin">
+                            <img src='http://placehold.jp/24/cccccc/ffffff/150x150.png?text=Upload' id="classifyoriginbody" />
+                        </div>
+                        <div class="col-xs-5 col-md-5 text-left icres"></div>
+                        <div class="col-xs-1 col-md-1"></div>
+
+                        <!-- object detection -->
+                        <!--
+                        <div class="row margin-section">
+                            <div class="col-xs-2 col-md-2"></div>
+                            <div class="col-xs-8 col-md-8 text-center oriimg">
+                                <img src='http://placehold.jp/24/cccccc/ffffff/150x150.png?text=Upload' id="oriimgbody" />
+                            </div>
+                            <div class="col-xs-2 col-md-2"></div>
+                        </div>
+                        <div class="row margin-section">
+                            <div class="col-xs-2 col-md-2"></div>
+                            <div class="col-xs-8 col-md-8 text-center resimg">
+                                <img src='http://placehold.jp/24/cccccc/ffffff/150x150.png?text=Result' id="resimgbody" />
+                            </div>
+                            <div class="col-xs-2 col-md-2"></div>
+                        </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -328,7 +366,7 @@
                       <div class="g-recaptcha" data-sitekey="6LcB61QUAAAAAK_0DjgGG1qEXi59cAFOSYboWTf7"></div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary uploadicp"><%= imagesend %></button>
+                <button type="button" class="btn btn-primary uploadicp" onclick="javascript: uploadscai();"><%= imagesend %></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><%= reportclose %></button>
             </div>
           </div>
@@ -660,6 +698,8 @@
     <script src="/src/currentPosition.js"></script>  
     <script src="/src/addMenu.js"></script>
     <script src="/src/routing.js"></script>
+    <script src="/src/image_classification.js"></script>
+    <script src="/src/object_detection.js"></script>
     <script src="/src/general.js"></script>  
   </body>
 </html>
