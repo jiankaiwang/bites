@@ -2,7 +2,7 @@ var odTaskInfo = {"sessname":"", "key":""};
 
 function change_origin_url() {
     $('.oriimg').css({'display':'block'});
-    var base = "http://epimap.japaneast.cloudapp.azure.com:5001/objectdetection/odres/odiptimg"
+    var base = "https://bites.cdc.gov.tw:5001/objectdetection/odres/odiptimg"
       , sessUrl = "?task=" + odTaskInfo['sessname'] + "&key=" + odTaskInfo['key'];
     $('#oriimgbody').attr('src',base + sessUrl);
 }
@@ -13,13 +13,13 @@ function change_result_notify(message) {
 }
 
 function change_result_complete() {
-    var base = "http://epimap.japaneast.cloudapp.azure.com:5001/objectdetection/odres/odresimg"
+    var base = "https://bites.cdc.gov.tw:5001/objectdetection/odres/odresimg"
       , sessUrl = "?task=" + odTaskInfo['sessname'] + "&key=" + odTaskInfo['key'];
     $('#resimgbody').attr('src',base + sessUrl);    
 }
 
 function wait_for_od_complete(retryCnt) {
-    var base = "http://epimap.japaneast.cloudapp.azure.com:5001/objectdetection/odres"
+    var base = "https://bites.cdc.gov.tw:5001/objectdetection/odres"
       , sessUrl = "?task=" + odTaskInfo['sessname'] + "&key=" + odTaskInfo['key'];
     $('.resimg').css({'display':'block'});
       
@@ -59,7 +59,7 @@ function wait_for_od_complete(retryCnt) {
 $(function(){
   $('#odupload').on('click', function() {
     $.ajax({
-      url: 'http://epimap.japaneast.cloudapp.azure.com:5001/objectdetection',
+      url: 'https://bites.cdc.gov.tw:5001/objectdetection',
       type: 'POST',
 
       // Form data

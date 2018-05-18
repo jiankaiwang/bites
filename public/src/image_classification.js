@@ -2,7 +2,7 @@ var icTaskInfo = {"sessname":"", "key":""};
 
 function ic_change_origin_url() {
     $('.classifyorigin').css({'display':'block'});
-    var base = "http://epimap.japaneast.cloudapp.azure.com:5001/imageclassification/imgclassres/iciptimg"
+    var base = "https://bites.cdc.gov.tw:5001/imageclassification/imgclassres/iciptimg"
       , sessUrl = "?task=" + icTaskInfo['sessname'] + "&key=" + icTaskInfo['key'];
     $('#classifyoriginbody').attr('src',base + sessUrl);
 }
@@ -12,7 +12,7 @@ function ic_change_result_notify(message) {
 }
 
 function wait_for_ic_complete() {
-    var base = "http://epimap.japaneast.cloudapp.azure.com:5001/imageclassification/imgclassres"
+    var base = "https://bites.cdc.gov.tw:5001/imageclassification/imgclassres"
       , sessUrl = "?task=" + icTaskInfo['sessname'] + "&key=" + icTaskInfo['key'];
       
     $.ajax({
@@ -50,7 +50,7 @@ function wait_for_ic_complete() {
 $(function(){
   $('#icupload').on('click', function() {
     $.ajax({
-      url: 'http://epimap.japaneast.cloudapp.azure.com:5001/imageclassification',
+      url: 'https://bites.cdc.gov.tw:5001/imageclassification',
       type: 'POST',
 
       // Form data
