@@ -2,7 +2,7 @@ var icTaskInfo = {"sessname":"", "key":""};
 
 function ic_change_origin_url() {
     $('.classifyorigin').css({'display':'block'});
-    var base = "https://bites.cdc.gov.tw:5001/imageclassification/imgclassres/iciptimg"
+    var base = "https://bites.cdc.gov.tw/imageclassification/imgclassres/iciptimg"
       , sessUrl = "?task=" + icTaskInfo['sessname'] + "&key=" + icTaskInfo['key'];
     $('#classifyoriginbody').attr('src',base + sessUrl);
 }
@@ -12,7 +12,7 @@ function ic_change_result_notify(message) {
 }
 
 function wait_for_ic_complete() {
-    var base = "https://bites.cdc.gov.tw:5001/imageclassification/imgclassres"
+    var base = "https://bites.cdc.gov.tw/imageclassification/imgclassres"
       , sessUrl = "?task=" + icTaskInfo['sessname'] + "&key=" + icTaskInfo['key'];
       
     $.ajax({
@@ -100,7 +100,7 @@ $(function(){
     }
 
     $.ajax({
-      url: 'https://bites.cdc.gov.tw:5001/imageclassification',
+      url: 'https://bites.cdc.gov.tw/imageclassification',
       type: 'POST',
 
       // Form data
