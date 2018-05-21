@@ -8,7 +8,7 @@ function change_origin_url() {
 }
 
 function change_result_notify(message) {
-    var base = "http://placehold.jp/24/cccccc/ffffff/300x300.png?text=";
+    var base = "https://placehold.jp/24/cccccc/ffffff/300x300.png?text=";
     $('#resimgbody').attr('src',base + message);    
 }
 
